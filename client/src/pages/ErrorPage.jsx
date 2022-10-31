@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ErrorIllustration from "../assets/error-illustration.png";
+
+// Components
 import Button from "../components/Button";
+
+// Assets
+import ErrorIllustration from "../assets/error-illustration.png";
 
 const ErrorPage = () => (
   <div className="container mx-auto flex justify-center items-center flex-col p-24 gap-12">

@@ -7,24 +7,6 @@ CREATE TABLE Person_Role(
     role_name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Rating(
-    id SERIAL PRIMARY KEY,
-    rating_value INT NOT NULL
-);
-
-CREATE TABLE Category(
-    id SERIAL PRIMARY KEY,
-    category_name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    modified_at TIMESTAMP NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE NOT NULL
-);
-
-CREATE TABLE Condition(
-    id SERIAL PRIMARY KEY,
-    condition_name VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE Department(
     id SERIAL PRIMARY KEY,
     department_name VARCHAR(255) NOT NULL
@@ -41,6 +23,29 @@ CREATE TABLE Municipality(
       ON DELETE CASCADE
 );
 
+CREATE TABLE Category(
+    id SERIAL PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    modified_at TIMESTAMP NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+CREATE TABLE Rating(
+    id SERIAL PRIMARY KEY,
+    rating_value INT NOT NULL
+);
+
+CREATE TABLE Condition(
+    id SERIAL PRIMARY KEY,
+    condition_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Chat_Status(
+    id SERIAL PRIMARY KEY,
+    chat_status_name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE Person(
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -48,20 +53,14 @@ CREATE TABLE Person(
     phone VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     psswrd VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255),
-    created_at TIMESTAMP NOT NULL,
-    modified_at TIMESTAMP NOT NULL,
+    avatar VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     role_id INT DEFAULT 2 NOT NULL,
-    department_id INT NOT NULL,
     CONSTRAINT person_role_id_fk
       FOREIGN KEY(role_id) 
 	    REFERENCES Person_Role(id)
-      ON UPDATE CASCADE
-      ON DELETE CASCADE,
-    CONSTRAINT person_department_id_fk
-      FOREIGN KEY(department_id) 
-	    REFERENCES Department(id)
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
@@ -202,11 +201,6 @@ CREATE TABLE Category_Subscription(
       ON DELETE CASCADE
 );
 
-CREATE TABLE Chat_Status(
-    id SERIAL PRIMARY KEY,
-    chat_status_name VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE Chat(
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
@@ -248,3 +242,34 @@ CREATE TABLE Chat_Message(
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
+
+INSERT INTO Person_Role (role_name) VALUES ('admin');
+INSERT INTO Person_Role (role_name) VALUES ('user');
+
+INSERT INTO Department (department_name) VALUES ('Atlantida');
+INSERT INTO Department (department_name) VALUES ('Colon');
+INSERT INTO Department (department_name) VALUES ('Comayagua');
+INSERT INTO Department (department_name) VALUES ('Copan');
+INSERT INTO Department (department_name) VALUES ('Cortes');
+INSERT INTO Department (department_name) VALUES ('Choluteca');
+INSERT INTO Department (department_name) VALUES ('El Paraiso');
+INSERT INTO Department (department_name) VALUES ('Francisco Morazan');
+INSERT INTO Department (department_name) VALUES ('Gracias a Dios');
+INSERT INTO Department (department_name) VALUES ('Intibuca');
+INSERT INTO Department (department_name) VALUES ('Islas de la Bahia');
+INSERT INTO Department (department_name) VALUES ('La Paz');
+INSERT INTO Department (department_name) VALUES ('Lempira');
+INSERT INTO Department (department_name) VALUES ('Ocotepeque');
+INSERT INTO Department (department_name) VALUES ('Olancho');
+INSERT INTO Department (department_name) VALUES ('Santa Barbara');
+INSERT INTO Department (department_name) VALUES ('Valle');
+INSERT INTO Department (department_name) VALUES ('Yoro');
+
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('La Ceiba', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('El Porvenir', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('Tela', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('Jutiapa', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('La Masica', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Francisco', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('Arizona', 1);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('Esparta', 1);

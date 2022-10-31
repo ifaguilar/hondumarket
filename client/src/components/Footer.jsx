@@ -111,7 +111,7 @@ const Footer = () => {
 
               <ul className="mt-8 space-y-4 text-sm">
                 <li>
-                  <Link to="/">
+                  <Link to="/terms">
                     <span className="text-gray-700 transition hover:text-[#3b82f6]">
                       Términos y condiciones
                     </span>

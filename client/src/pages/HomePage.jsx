@@ -1,7 +1,11 @@
 import React from "react";
 
 const HomePage = () => {
-  return <h1>Homepage</h1>;
+  return (
+    <div className="container mx-auto py-12 min-h-screen">
+      <h2 className="text-3xl font-bold">Últimos productos</h2>
+    </div>
+  );
   // const [products, setProducts] = useState([]);
 
   // const fetchProducts = async () => {
