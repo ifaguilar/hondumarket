@@ -1,12 +1,7 @@
 import React from "react";
 
-const Product = ({ product }) => {
-  return (
-    <div className="">
-      <h3>{product.product_name}</h3>
-      <p>{product.price}</p>
-    </div>
-  );
+const ProductCard = () => {
+  return <div>ProductCard</div>;
 };
 
-export default Product;
+export default ProductCard;

@@ -54,3 +54,11 @@ const validateResult = (req, res, next) => {
     res.status(403).send(error.array());
   }
 };
+
+export const validateForgotPassword = [
+  check("email", "Ingresa un correo electrónico válido.").exists().isEmail(),
+
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];

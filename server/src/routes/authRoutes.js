@@ -1,17 +1,18 @@
 import { Router } from "express";
 
 // Middleware
-import authorizeUser from "../middleware/authMiddleware.js";
 import {
+  validateForgotPassword,
   validateSignin,
   validateSignup,
 } from "../middleware/validationMiddleware.js";
 
 // Controllers
 import {
+  forgotPassword,
+  resetPassword,
   signinUser,
   signupUser,
-  verifyUser,
 } from "../controllers/authController.js";
 
 const router = Router();
@@ -19,6 +20,7 @@ const router = Router();
 // Routes
 router.post("/signin", validateSignin, signinUser);
 router.post("/signup", validateSignup, signupUser);
-router.get("/verify", authorizeUser, verifyUser);
+router.post("/forgot-password", validateForgotPassword, forgotPassword);
+router.patch("/reset-password", resetPassword);
 
 export default router;

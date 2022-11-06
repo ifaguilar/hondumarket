@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Pages
-
 // Context
 import AuthContext from "../context/AuthContextProvider";
 

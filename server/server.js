@@ -5,6 +5,7 @@ import express from "express";
 
 // Importing routes
 import authRoutes from "./src/routes/authRoutes.js";
+import departmentRoutes from "./src/routes/departmentRoutes.js";
 
 // Initializing .env
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/departments", departmentRoutes);
 
 // Listening for requests
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

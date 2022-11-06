@@ -1,12 +1,16 @@
 import React, { useContext } from "react";
-import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import Button from "./Button";
-import Logo from "./Logo";
+import CustomButton from "./CustomButton";
 import SearchBar from "./SearchBar";
+
+// Icons
+import { BsChevronDown } from "react-icons/bs";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
+
+// Components
+import Logo from "./Logo";
 
 const Navbar = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -64,21 +68,25 @@ const Navbar = () => {
 
               <BsChevronDown className="ml-4 h-4 w-4 text-gray-500" />
             </div>
-            <Button type="button" variant="primary" onClick={(e) => logout(e)}>
+            <CustomButton
+              type="button"
+              variant="primary"
+              onClick={(e) => logout(e)}
+            >
               Cerrar sesión
-            </Button>
+            </CustomButton>
           </div>
         ) : (
           <div className="grid gap-4 grid-flow-col">
             <Link to="/signin">
-              <Button type="button" variant="primary">
+              <CustomButton type="button" variant="primary">
                 Iniciar sesión
-              </Button>
+              </CustomButton>
             </Link>
             <Link to="/signup">
-              <Button type="button" variant="secondary">
+              <CustomButton type="button" variant="secondary">
                 Registrarse
-              </Button>
+              </CustomButton>
             </Link>
           </div>
         )}
@@ -86,4 +94,5 @@ const Navbar = () => {
     </header>
   );
 };
+
 export default Navbar;

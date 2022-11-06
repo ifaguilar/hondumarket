@@ -1,42 +1,80 @@
-import React, { useContext, useState } from "react";
+import { Form, Formik } from "formik";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// Components
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Logo from "../components/Logo";
+// Assets
+import WebsiteIllustration from "../assets/website-illustration.png";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
 
-// Assets
-import WebsiteIllustration from "../assets/website-illustration.png";
+// Components
+import CustomButton from "../components/CustomButton";
+import CustomCheckbox from "../components/CustomCheckbox";
+import CustomInput from "../components/CustomInput";
+import CustomSelect from "../components/CustomSelect";
+import Logo from "../components/Logo";
+import Modal from "../components/Modal";
+import Terms from "../components/Terms";
+
+// Utils
+import { SignupFormSchema } from "../utils/FormSchemas";
 
 const SignupPage = () => {
   const { setAuth } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const [inputs, setInputs] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
-    municipalityId: "",
-  });
+  const [departments, setDepartments] = useState([]);
+  const [municipalities, setMunicipalities] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
-  const { firstName, lastName, phone, email, password, municipalityId } =
-    inputs;
+  const authUser = async (body) => {
+    const response = await fetch("http://localhost:3000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-  const onChange = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+    const data = await response.json();
+
+    return data;
   };
 
-  const onSubmitForm = async (e) => {
-    e.preventDefault();
+  const fetchDepartments = async () => {
+    const response = await fetch("http://localhost:3000/api/departments");
+    const data = await response.json();
 
+    setDepartments(data);
+  };
+
+  const fetchMunicipalities = async (id) => {
+    if (id !== "") {
+      const response = await fetch(
+        `http://localhost:3000/api/departments/municipalities/${id}`
+      );
+
+      const data = await response.json();
+
+      setMunicipalities(data);
+    } else {
+      setMunicipalities([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  const onSubmit = async (values) => {
     try {
+      const firstName = values.firstName;
+      const lastName = values.lastName;
+      const phone = values.phone;
+      const email = values.email;
+      const password = values.password;
+      const municipalityId = values.municipality;
+
       const body = {
         firstName,
         lastName,
@@ -46,24 +84,12 @@ const SignupPage = () => {
         municipalityId,
       };
 
-      const response = await fetch("http://localhost:3000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const data = await authUser(body);
 
-      const data = await response.json();
-
-      if (
-        data &&
-        typeof data === "object" &&
-        !Array.isArray(data) &&
-        !data.message
-      ) {
-        localStorage.setItem("token", data.token);
+      if (data.success) {
         localStorage.setItem(
           "user",
-          JSON.stringify(data, [
+          JSON.stringify(data.user, [
             "id",
             "firstName",
             "lastName",
@@ -73,11 +99,12 @@ const SignupPage = () => {
             "roleId",
           ])
         );
+        localStorage.setItem("token", data.token);
 
         setAuth(true);
         navigate("/");
       } else {
-        console.log("Invalid sign up.");
+        alert(data.message);
       }
     } catch (error) {
       console.error(error.message);
@@ -85,129 +112,147 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="h-screen grid grid-cols-2">
-      <div className="flex justify-center items-center bg-blue-500">
-        <img className="w-3/4" src={WebsiteIllustration} alt="Website" />
-      </div>
-
-      <div className="flex flex-col justify-center items-center bg-white gap-16 p-16">
-        <Link to="/">
-          <Logo />
-        </Link>
-
-        <form onSubmit={onSubmitForm} className="flex flex-col gap-12">
-          <div className="flex flex-col gap-4">
-            <label htmlFor="firstName" className="text-sm font-medium">
-              Nombre
-            </label>
-            <Input
-              type="text"
-              placeholder="Ingresa tu nombre"
-              name="firstName"
-              value={firstName}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
+    <>
+      <Modal open={openModal} close={() => setOpenModal(false)}>
+        <Terms />
+      </Modal>
+      <div className="h-screen grid grid-cols-2">
+        <div className="relative bg-blue-500">
+          <div className="fixed flex justify-center items-center h-screen w-1/2 z-0">
+            <img className="w-3/4" src={WebsiteIllustration} alt="Website" />
           </div>
+        </div>
 
-          <div className="flex flex-col gap-4">
-            <label htmlFor="lastName" className="text-sm font-medium">
-              Apellido
-            </label>
-            <Input
-              type="text"
-              placeholder="Ingresa tu apellido"
-              name="lastName"
-              value={lastName}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
-          </div>
+        <div className="flex flex-col justify-center items-center bg-white gap-16 p-16">
+          <Link to="/">
+            <Logo />
+          </Link>
 
-          <div className="flex flex-col gap-4">
-            <label htmlFor="phone" className="text-sm font-medium">
-              Teléfono
-            </label>
-            <Input
-              type="text"
-              placeholder="Ingresa tu teléfono"
-              name="phone"
-              value={phone}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
-          </div>
+          <Formik
+            initialValues={{
+              firstName: "",
+              lastName: "",
+              phone: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+              department: "",
+              municipality: "",
+              terms: false,
+            }}
+            validationSchema={SignupFormSchema}
+            onSubmit={onSubmit}
+          >
+            {(props) => (
+              <Form className="flex flex-col gap-12 max-w-sm">
+                <CustomInput
+                  label="Nombre"
+                  type="text"
+                  name="firstName"
+                  placeholder="Ingresa tu nombre..."
+                  required
+                />
 
-          <div className="flex flex-col gap-4">
-            <label htmlFor="email" className="text-sm font-medium">
-              Correo electrónico
-            </label>
-            <Input
-              type="email"
-              placeholder="Ingresa tu correo electrónico"
-              name="email"
-              value={email}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
-          </div>
+                <CustomInput
+                  label="Apellido"
+                  type="text"
+                  name="lastName"
+                  placeholder="Ingresa tu apellido..."
+                  required
+                />
 
-          <div className="flex flex-col gap-4">
-            <label htmlFor="password" className="text-sm font-medium">
-              Contraseña
-            </label>
-            <Input
-              type="password"
-              placeholder="Ingresa tu contraseña"
-              name="password"
-              value={password}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
-          </div>
+                <CustomInput
+                  label="Teléfono"
+                  type="text"
+                  name="phone"
+                  placeholder="Ingresa tu teléfono..."
+                  required
+                />
 
-          <div className="flex flex-col gap-4">
-            <label htmlFor="municipalityId" className="text-sm font-medium">
-              Municipio
-            </label>
-            <Input
-              type="text"
-              placeholder="Ingresa tu municipio"
-              name="municipalityId"
-              value={municipalityId}
-              onChange={(e) => onChange(e)}
-              isRequired={true}
-            />
-          </div>
+                <CustomInput
+                  label="Correo electrónico"
+                  type="email"
+                  name="email"
+                  placeholder="Ingresa tu correo electrónico..."
+                  required
+                />
 
-          <div className="flex items-start gap-4">
-            <input type="checkbox" name="terms" required />
-            <label htmlFor="terms" className="text-sm max-w-xs">
-              Crear una cuenta significa que estás de acuerdo con nuestros
-              <Link to="/terms">
-                <span className="ml-1 text-blue-500">
-                  términos y condiciones
-                </span>
+                <CustomInput
+                  label="Contraseña"
+                  type="password"
+                  name="password"
+                  placeholder="Ingresa tu contraseña..."
+                  required
+                />
+
+                <CustomInput
+                  label="Confirmar contraseña"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Ingresa de nuevo tu contraseña..."
+                  required
+                />
+
+                <CustomSelect
+                  label="Departamento"
+                  name="department"
+                  onChange={(e) => {
+                    props.handleChange(e);
+                    fetchMunicipalities(e.target.value);
+                  }}
+                  required
+                >
+                  <option value="">Selecciona tu departamento...</option>
+                  {departments &&
+                    departments.map((department) => (
+                      <option key={department.id} value={department.id}>
+                        {department.department_name}
+                      </option>
+                    ))}
+                </CustomSelect>
+
+                <CustomSelect label="Municipio" name="municipality" required>
+                  <option value="">Selecciona tu municipio...</option>
+                  {municipalities &&
+                    municipalities.map((municipality) => (
+                      <option key={municipality.id} value={municipality.id}>
+                        {municipality.municipality_name}
+                      </option>
+                    ))}
+                </CustomSelect>
+
+                <div className="flex gap-4 items-start">
+                  <CustomCheckbox label="" type="checkbox" name="terms" />
+                  <label htmlFor="terms" className="text-sm max-w-xs">
+                    Crear una cuenta significa que estás de acuerdo con nuestros
+                    <span
+                      className="ml-1 text-blue-500 cursor-pointer"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      términos y condiciones.
+                    </span>
+                  </label>
+                </div>
+
+                <CustomButton type="submit" variant="primary">
+                  Registrarse
+                </CustomButton>
+              </Form>
+            )}
+          </Formik>
+
+          <div>
+            <p className="text-sm text-gray-500">
+              ¿Ya tienes cuenta?
+              <Link to="/signin">
+                <span className="ml-1 text-blue-500">Inicia sesión</span>
               </Link>
-              .
-            </label>
+            </p>
           </div>
-
-          <Button type="submit" variant="primary">
-            Registrarse
-          </Button>
-        </form>
-
-        <div>
-          <p className="text-sm text-gray-500">
-            ¿Ya tienes cuenta?
-            <Link to="/signin">
-              <span className="ml-1 text-blue-500">Inicia sesión</span>
-            </Link>
-          </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
+
 export default SignupPage;

@@ -1,12 +1,9 @@
 import { Form, Formik } from "formik";
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Assets
-import MarketplaceIllustration from "../assets/marketplace-illustration.png";
-
-// Context
-import AuthContext from "../context/AuthContextProvider";
+import ForgotPasswordIllustration from "../assets/forgot-password-illustration.png";
 
 // Components
 import CustomButton from "../components/CustomButton";
@@ -14,19 +11,20 @@ import CustomInput from "../components/CustomInput";
 import Logo from "../components/Logo";
 
 // Utils
-import { SigninFormSchema } from "../utils/FormSchemas";
+import { ForgotPasswordFormSchema } from "../utils/FormSchemas";
 
-const SigninPage = () => {
-  const { setAuth } = useContext(AuthContext);
-
+const ForgotPasswordPage = () => {
   const navigate = useNavigate();
 
-  const authUser = async (body) => {
-    const response = await fetch("http://localhost:3000/api/auth/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+  const sendEmail = async (body) => {
+    const response = await fetch(
+      "http://localhost:3000/api/auth/forgot-password",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
 
     const data = await response.json();
 
@@ -36,31 +34,16 @@ const SigninPage = () => {
   const onSubmit = async (values) => {
     try {
       const email = values.email;
-      const password = values.password;
 
       const body = {
         email,
-        password,
       };
 
-      const data = await authUser(body);
+      const data = await sendEmail(body);
 
-      if (data.success) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user, [
-            "id",
-            "firstName",
-            "lastName",
-            "phone",
-            "email",
-            "avatar",
-            "roleId",
-          ])
-        );
-        localStorage.setItem("token", data.token);
-
-        setAuth(true);
+      if (data.resetToken) {
+        localStorage.setItem("resetToken", data.resetToken);
+        alert(data.message);
         navigate("/");
       } else {
         alert(data.message);
@@ -74,7 +57,11 @@ const SigninPage = () => {
     <div className="h-screen grid grid-cols-2">
       <div className=" bg-blue-500">
         <div className="flex justify-center items-center h-screen">
-          <img className="w-3/4" src={MarketplaceIllustration} alt="Website" />
+          <img
+            className="w-3/4"
+            src={ForgotPasswordIllustration}
+            alt="Forgot Password"
+          />
         </div>
       </div>
 
@@ -86,13 +73,16 @@ const SigninPage = () => {
         <Formik
           initialValues={{
             email: "",
-            password: "",
           }}
-          validationSchema={SigninFormSchema}
+          validationSchema={ForgotPasswordFormSchema}
           onSubmit={onSubmit}
         >
           {(props) => (
             <Form className="flex flex-col gap-12 max-w-sm">
+              <p className="leading-8 text-center text-sm">
+                Si olvidaste tu contraseña, te enviaremos un correo con un
+                enlace para que puedas restablecer tu contraseña.
+              </p>
               <CustomInput
                 label="Correo electrónico"
                 type="email"
@@ -101,16 +91,8 @@ const SigninPage = () => {
                 required
               />
 
-              <CustomInput
-                label="Contraseña"
-                type="password"
-                name="password"
-                placeholder="Ingresa tu contraseña..."
-                required
-              />
-
               <CustomButton type="submit" variant="primary">
-                Iniciar sesión
+                Enviar correo
               </CustomButton>
             </Form>
           )}
@@ -118,18 +100,15 @@ const SigninPage = () => {
 
         <div className="flex flex-col items-center gap-8">
           <p className="text-sm text-gray-500">
-            ¿No tienes cuenta?
-            <Link to="/signup">
-              <span className="ml-1 text-blue-500">Regístrate</span>
+            ¿Ya tienes cuenta?
+            <Link to="/signin">
+              <span className="ml-1 text-blue-500">Inicia sesión</span>
             </Link>
           </p>
-          <Link to="/forgot-password">
-            <span className="text-sm text-blue-500">Olvidé mi contraseña</span>
-          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default SigninPage;
+export default ForgotPasswordPage;
