@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import db from "../database/db.js";
 
+// Initializing .env
 dotenv.config();
 
 export const getDepartments = async (req, res) => {

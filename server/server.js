@@ -5,7 +5,10 @@ import express from "express";
 
 // Importing routes
 import authRoutes from "./src/routes/authRoutes.js";
+import categoryRoutes from "./src/routes/categoryRoutes.js";
 import departmentRoutes from "./src/routes/departmentRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
+import subscriptionRoutes from "./src/routes/subscriptionRoutes.js";
 
 // Initializing .env
 dotenv.config();
@@ -20,7 +23,10 @@ app.use(cors());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/departments", departmentRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/subscriptions", subscriptionRoutes);
 
 // Listening for requests
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

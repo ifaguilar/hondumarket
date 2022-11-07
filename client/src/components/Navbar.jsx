@@ -60,11 +60,16 @@ const Navbar = () => {
                 className="h-10 w-10 rounded-full object-cover"
               />
 
-              <p className="ml-2 text-xs">
-                <strong className="block font-medium">{showFullName()}</strong>
+              <div className="relative">
+                <p className="ml-2 text-xs">
+                  <strong className="block font-medium">
+                    {showFullName()}
+                  </strong>
 
-                <span className="block text-gray-500">{showEmail()}</span>
-              </p>
+                  <span className="block text-gray-500">{showEmail()}</span>
+                </p>
+                <ul className="absolute top-0"></ul>
+              </div>
 
               <BsChevronDown className="ml-4 h-4 w-4 text-gray-500" />
             </div>
