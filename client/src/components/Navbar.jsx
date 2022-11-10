@@ -1,10 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CustomButton from "./CustomButton";
-import SearchBar from "./SearchBar";
 
 // Icons
-import { BsChevronDown } from "react-icons/bs";
+import { IconContext } from "react-icons";
+import {
+  BsBoxArrowInLeft,
+  BsFillGearFill,
+  BsFillHeartFill,
+  BsFillInboxFill,
+  BsFillPersonFill,
+} from "react-icons/bs";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
@@ -14,6 +20,17 @@ import Logo from "./Logo";
 
 const Navbar = () => {
   const { auth, setAuth } = useContext(AuthContext);
+
+  const [open, setOpen] = useState(false);
+
+  const menuRef = useRef();
+  const imgRef = useRef();
+
+  window.addEventListener("click", (e) => {
+    if (e.target !== menuRef.current && e.target !== imgRef.current) {
+      setOpen(false);
+    }
+  });
 
   const showFullName = () => {
     if (auth) {
@@ -40,6 +57,7 @@ const Navbar = () => {
     setAuth(false);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("subscriptions");
   };
 
   return (
@@ -49,37 +67,107 @@ const Navbar = () => {
           <Logo />
         </Link>
 
-        <SearchBar />
-
         {auth ? (
-          <div className="flex gap-4">
-            <div className="flex items-center cursor-pointer transition py-1 px-2 rounded-md hover:bg-gray-100">
-              <img
-                alt="Avatar"
-                src={showAvatar()}
-                className="h-10 w-10 rounded-full object-cover"
-              />
-
-              <div className="relative">
-                <p className="ml-2 text-xs">
-                  <strong className="block font-medium">
-                    {showFullName()}
-                  </strong>
-
-                  <span className="block text-gray-500">{showEmail()}</span>
-                </p>
-                <ul className="absolute top-0"></ul>
-              </div>
-
-              <BsChevronDown className="ml-4 h-4 w-4 text-gray-500" />
-            </div>
-            <CustomButton
-              type="button"
-              variant="primary"
-              onClick={(e) => logout(e)}
+          <div className="flex items-center gap-4 relative">
+            <IconContext.Provider
+              value={{
+                className: "text-gray-700 transition",
+                size: "16px",
+              }}
             >
-              Cerrar sesión
-            </CustomButton>
+              <div className="h-10 w-10 flex items-center justify-center cursor-pointer transition rounded hover:bg-gray-100">
+                <BsFillHeartFill />
+              </div>
+            </IconContext.Provider>
+            <img
+              alt="Avatar"
+              src={showAvatar()}
+              className="h-10 w-10 rounded-full object-cover cursor-pointer"
+              onClick={() => setOpen(!open)}
+              ref={imgRef}
+            />
+            {open ? (
+              <div className="bg-white shadow-xl absolute top-12 right-0 rounded-lg">
+                <div className="flex items-center px-6 py-4 w-72" ref={menuRef}>
+                  <img
+                    alt="Avatar"
+                    src={showAvatar()}
+                    className="h-10 w-10 rounded-full object-cover mr-2"
+                  />
+
+                  <div>
+                    <p className="text-xs">
+                      <strong className="block font-medium">
+                        {showFullName()}
+                      </strong>
+
+                      <span className="block text-gray-500">{showEmail()}</span>
+                    </p>
+                  </div>
+                </div>
+                <ul>
+                  <li
+                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "text-gray-700",
+                        size: "16px",
+                      }}
+                    >
+                      <BsFillPersonFill />
+                    </IconContext.Provider>
+                    <span>Perfil</span>
+                  </li>
+                  <li
+                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "text-gray-700",
+                        size: "16px",
+                      }}
+                    >
+                      <BsFillInboxFill />
+                    </IconContext.Provider>
+                    <span>Mensajes</span>
+                  </li>
+                  <li
+                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "text-gray-700",
+                        size: "16px",
+                      }}
+                    >
+                      <BsFillGearFill />
+                    </IconContext.Provider>
+                    <span>Configuración</span>
+                  </li>
+                  <li
+                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                    onClick={(e) => {
+                      setOpen(false);
+                      logout(e);
+                    }}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "text-gray-700",
+                        size: "16px",
+                      }}
+                    >
+                      <BsBoxArrowInLeft />
+                    </IconContext.Provider>
+                    <span>Cerrar sesión</span>
+                  </li>
+                </ul>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="grid gap-4 grid-flow-col">

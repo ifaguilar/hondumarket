@@ -32,8 +32,8 @@ CREATE TABLE Municipality(
 CREATE TABLE Category(
     id SERIAL PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL
 );
 
@@ -50,8 +50,8 @@ CREATE TABLE Person(
     email VARCHAR(255) UNIQUE NOT NULL,
     psswrd VARCHAR(255) NOT NULL,
     avatar VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     role_id INT DEFAULT 2 NOT NULL,
     CONSTRAINT person_role_id_fk
@@ -65,8 +65,8 @@ CREATE TABLE Person_Rating(
     person_id INT NOT NULL,
     reviewer_id INT NOT NULL,
     rating_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     PRIMARY KEY(person_id, reviewer_id),
     CONSTRAINT person_rating_person_id_fk
       FOREIGN KEY(person_id) 
@@ -106,10 +106,10 @@ CREATE TABLE Product(
     product_name VARCHAR(255) NOT NULL,
     product_description VARCHAR(255) NOT NULL,
     price FLOAT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
-    expiration_date TIMESTAMP DEFAULT NOW() + INTERVAL '30 DAYS' NOT NULL,
+    expiration_date TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() + INTERVAL '30 DAYS' NOT NULL,
     person_id INT NOT NULL,
     category_id INT NOT NULL,
     condition_id INT NOT NULL,
@@ -145,8 +145,8 @@ CREATE TABLE Wishlist(
     id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     product_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     CONSTRAINT wishlist_person_id_fk
       FOREIGN KEY(person_id) 
 	    REFERENCES Person(id)
@@ -163,8 +163,8 @@ CREATE TABLE Subscription(
     id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     category_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     CONSTRAINT subscription_person_id_fk
       FOREIGN KEY(person_id) 
 	    REFERENCES Person(id)
@@ -181,8 +181,8 @@ CREATE TABLE Chat(
     id SERIAL PRIMARY KEY,
     buyer_id INT NOT NULL,
     seller_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     chat_status_id INT NOT NULL,
     CONSTRAINT chat_buyer_id_fk
       FOREIGN KEY(buyer_id) 
@@ -204,7 +204,7 @@ CREATE TABLE Chat(
 CREATE TABLE Chat_Message(
     id SERIAL PRIMARY KEY,
     reply VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     person_id INT NOT NULL,
     chat_id INT NOT NULL,
     CONSTRAINT chat_message_person_id_fk

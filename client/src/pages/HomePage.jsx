@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContextProvider";
 
 // Components
+import SearchBar from "../components/CustomSearch";
 import ProductCard from "../components/ProductCard";
 
 const HomePage = () => {
@@ -61,7 +62,9 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    fetchSubscriptions();
+    if (auth) {
+      fetchSubscriptions();
+    }
   }, []);
 
   // Filtra los productos guardados en storedProducts
@@ -223,59 +226,80 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container mx-auto py-12 min-h-screen flex flex-col gap-16">
-      <div className="flex gap-4 whitespace-nowrap overflow-auto py-4">
-        <button
-          className="text-sm font-medium text-blue-500 bg-blue-100 px-4 py-2 rounded"
-          onClick={() => {
-            setActiveCategory("Todos los productos");
-            setProducts(storedProducts);
-          }}
-        >
-          Todos los productos
-        </button>
-        {categories.map((category) => (
-          <button
-            className="text-sm font-medium text-blue-500 bg-blue-100 px-4 py-2 rounded"
-            key={category.id}
-            onClick={() => {
-              setActiveCategory(category.category_name);
-              filterByCategory(category.id);
-              verifySubscription(category.id);
-            }}
-          >
-            {category.category_name}
-          </button>
-        ))}
-      </div>
-      <div className="flex items-center gap-8">
-        <h1 className="text-3xl font-bold">{activeCategory}</h1>
-        {auth &&
-        activeCategory !== "Todos los productos" &&
-        isActiveCategorySubbed ? (
-          <button
-            className="text-sm font-medium btn-danger px-4 py-2 rounded"
-            onClick={() => unsubscribeFromCategory()}
-          >
-            Desuscribirse
-          </button>
-        ) : auth && activeCategory !== "Todos los productos" ? (
-          <button
-            className="text-sm font-medium btn-success px-4 py-2 rounded"
-            onClick={() => subscribeToCategory()}
-          >
-            Suscribirse
-          </button>
-        ) : null}
-      </div>
-      <div className="grid grid-cols-4 gap-16">
-        {products.length !== 0 ? (
-          products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))
-        ) : (
-          <p>No se encontraron productos.</p>
-        )}
+    <div className="container mx-auto py-16 min-h-screen flex flex-col gap-16">
+      <div className="flex gap-16">
+        <div className="flex flex-col gap-12 ">
+          <h2 className="text-3xl font-bold">Filtros</h2>
+          <div className="flex flex-col gap-16 p-8 bg-white rounded-lg shadow-sm min-h-screen">
+            <SearchBar />
+
+            <div className="flex flex-col gap-4">
+              <label htmlFor="categories">Categoría</label>
+              <select
+                name="categories"
+                className="h-14 rounded-md px-5 bg-gray-100 placeholder-gray-500 focus:bg-white focus:shadow-[inset_0_0_0_2px_rgba(59,130,246,1)] outline-0 text-sm transition hover:shadow-[inset_0_0_0_2px_rgba(209,213,219,1)]"
+                onChange={(e) => {
+                  const categoryId = parseInt(JSON.parse(e.target.value).id);
+                  const categoryName = JSON.parse(e.target.value).categoryName;
+
+                  if (categoryName === "Todos los productos") {
+                    setActiveCategory("Todos los productos");
+                    setProducts(storedProducts);
+                  } else {
+                    setActiveCategory(categoryName);
+                    filterByCategory(categoryId);
+                    verifySubscription(categoryId);
+                  }
+                }}
+              >
+                <option
+                  value={`{"id": "0", "categoryName": "Todos los productos"}`}
+                >
+                  Selecciona una categoría...
+                </option>
+                {categories.map((category) => (
+                  <option
+                    key={category.id}
+                    value={`{"id": "${category.id}", "categoryName": "${category.category_name}"}`}
+                  >
+                    {category.category_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-12">
+          <div className="flex items-center gap-8">
+            <h1 className="text-3xl font-bold">{activeCategory}</h1>
+            {auth &&
+            activeCategory !== "Todos los productos" &&
+            isActiveCategorySubbed ? (
+              <button
+                className="text-sm font-medium btn-muted px-4 py-2 rounded"
+                onClick={() => unsubscribeFromCategory()}
+              >
+                Suscrito
+              </button>
+            ) : auth && activeCategory !== "Todos los productos" ? (
+              <button
+                className="text-sm font-medium btn-primary px-4 py-2 rounded"
+                onClick={() => subscribeToCategory()}
+              >
+                Suscribirse
+              </button>
+            ) : null}
+          </div>
+          <div className="grid grid-cols-3 gap-16">
+            {products.length !== 0 ? (
+              products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+              <p>No se encontraron productos.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

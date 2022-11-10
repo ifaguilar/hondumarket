@@ -23,7 +23,7 @@ const CustomCheckbox = ({ label, ...props }) => {
               : `${tailwindClass}`
           }
         />
-        <label className="text-sm max-w-xs">{label}</label>
+        <label className="max-w-xs">{label}</label>
       </div>
 
       {meta.touched && meta.error && (

@@ -12,7 +12,9 @@ const ProductCard = ({ product }) => {
       </div>
       <div className="flex flex-col gap-4 p-8">
         <h3 className="text-sm font-medium">{product.product_name}</h3>
-        <span className="text-xl font-bold">L. {product.price}</span>
+        <span className="text-xl font-bold">
+          L. {new Intl.NumberFormat().format(product.price)}
+        </span>
       </div>
     </div>
   );

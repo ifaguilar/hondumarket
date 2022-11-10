@@ -9,7 +9,7 @@ const CustomSelect = ({ label, ...props }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <label className="text-sm font-medium">{label}</label>
+      <label>{label}</label>
       <select
         {...field}
         {...props}

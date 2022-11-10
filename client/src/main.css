@@ -31,12 +31,12 @@ body {
   @apply bg-green-500/90;
 }
 
-.btn-danger {
-  @apply bg-red-500 text-white;
+.btn-muted {
+  @apply bg-gray-300 text-gray-500;
 }
 
-.btn-danger:hover {
-  @apply bg-red-500/90;
+.btn-muted:hover {
+  @apply bg-gray-300/90;
 }
 
 .input-error {
@@ -48,4 +48,8 @@ body {
   background-image: url("./assets/arrow-down.png");
   background-repeat: no-repeat, repeat;
   background-position: right 20px top 50%, 0 0;
+}
+
+label {
+  @apply text-sm font-medium;
 }
