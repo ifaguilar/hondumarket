@@ -6,9 +6,9 @@ import CustomButton from "./CustomButton";
 import { IconContext } from "react-icons";
 import {
   BsBoxArrowInLeft,
-  BsFillGearFill,
+  BsFillChatFill,
   BsFillHeartFill,
-  BsFillInboxFill,
+  BsFillImageFill,
   BsFillPersonFill,
 } from "react-icons/bs";
 
@@ -23,11 +23,20 @@ const Navbar = () => {
 
   const [open, setOpen] = useState(false);
 
-  const menuRef = useRef();
   const imgRef = useRef();
+  const menuRef = useRef();
+  const avatarRef = useRef();
+  const nameRef = useRef();
+  const emailRef = useRef();
 
   window.addEventListener("click", (e) => {
-    if (e.target !== menuRef.current && e.target !== imgRef.current) {
+    if (
+      e.target !== menuRef.current &&
+      e.target !== imgRef.current &&
+      e.target !== avatarRef.current &&
+      e.target !== nameRef.current &&
+      e.target !== emailRef.current
+    ) {
       setOpen(false);
     }
   });
@@ -58,10 +67,11 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("subscriptions");
+    localStorage.removeItem("wishlist");
   };
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm fixed w-full top-0 z-50">
       <nav className="container mx-auto py-2 flex justify-between items-center">
         <Link to="/">
           <Logo />
@@ -69,16 +79,18 @@ const Navbar = () => {
 
         {auth ? (
           <div className="flex items-center gap-4 relative">
-            <IconContext.Provider
-              value={{
-                className: "text-gray-700 transition",
-                size: "16px",
-              }}
-            >
-              <div className="h-10 w-10 flex items-center justify-center cursor-pointer transition rounded hover:bg-gray-100">
-                <BsFillHeartFill />
-              </div>
-            </IconContext.Provider>
+            <Link to="/wishlist">
+              <IconContext.Provider
+                value={{
+                  className: "text-gray-700 transition",
+                  size: "16px",
+                }}
+              >
+                <div className="h-10 w-10 flex items-center justify-center cursor-pointer transition rounded hover:bg-gray-100">
+                  <BsFillHeartFill />
+                </div>
+              </IconContext.Provider>
+            </Link>
             <img
               alt="Avatar"
               src={showAvatar()}
@@ -87,67 +99,76 @@ const Navbar = () => {
               ref={imgRef}
             />
             {open ? (
-              <div className="bg-white shadow-xl absolute top-12 right-0 rounded-lg">
+              <div className="bg-white shadow-xl absolute top-12 right-0 rounded-lg z-50">
                 <div className="flex items-center px-6 py-4 w-72" ref={menuRef}>
                   <img
                     alt="Avatar"
                     src={showAvatar()}
                     className="h-10 w-10 rounded-full object-cover mr-2"
+                    ref={avatarRef}
                   />
 
                   <div>
                     <p className="text-xs">
-                      <strong className="block font-medium">
+                      <strong className="block font-medium" ref={nameRef}>
                         {showFullName()}
                       </strong>
 
-                      <span className="block text-gray-500">{showEmail()}</span>
+                      <span className="block text-gray-500" ref={emailRef}>
+                        {showEmail()}
+                      </span>
                     </p>
                   </div>
                 </div>
                 <ul>
-                  <li
-                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
-                    onClick={() => setOpen(false)}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "text-gray-700",
-                        size: "16px",
-                      }}
+                  <Link to="/profile">
+                    <li
+                      className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                      onClick={() => setOpen(false)}
                     >
-                      <BsFillPersonFill />
-                    </IconContext.Provider>
-                    <span>Perfil</span>
-                  </li>
-                  <li
-                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
-                    onClick={() => setOpen(false)}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "text-gray-700",
-                        size: "16px",
-                      }}
+                      <IconContext.Provider
+                        value={{
+                          className: "text-gray-700",
+                          size: "16px",
+                        }}
+                      >
+                        <BsFillPersonFill />
+                      </IconContext.Provider>
+                      <span>Perfil</span>
+                    </li>
+                  </Link>
+                  <Link to="/chat">
+                    <li
+                      className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                      onClick={() => setOpen(false)}
                     >
-                      <BsFillInboxFill />
-                    </IconContext.Provider>
-                    <span>Mensajes</span>
-                  </li>
-                  <li
-                    className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
-                    onClick={() => setOpen(false)}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "text-gray-700",
-                        size: "16px",
-                      }}
+                      <IconContext.Provider
+                        value={{
+                          className: "text-gray-700",
+                          size: "16px",
+                        }}
+                      >
+                        <BsFillChatFill />
+                      </IconContext.Provider>
+                      <span>Mensajes</span>
+                    </li>
+                  </Link>
+                  <Link to="/my-products">
+                    <li
+                      className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                      onClick={() => setOpen(false)}
                     >
-                      <BsFillGearFill />
-                    </IconContext.Provider>
-                    <span>Configuración</span>
-                  </li>
+                      <IconContext.Provider
+                        value={{
+                          className: "text-gray-700",
+                          size: "16px",
+                        }}
+                      >
+                        <BsFillImageFill />
+                      </IconContext.Provider>
+                      <span>Mis Productos</span>
+                    </li>
+                  </Link>
                   <li
                     className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
                     onClick={(e) => {

@@ -379,7 +379,7 @@ INSERT INTO Municipality (municipality_name, department_id) VALUES ('Yauyupe', 7
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Trojes', 7);
 
 -- Francisco Morazán
-INSERT INTO Municipality (municipality_name, department_id) VALUES ('Distrito Central (Comayagüela y Tegucigalpa)', 8);
+INSERT INTO Municipality (municipality_name, department_id) VALUES ('Distrito Central', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Alubarén', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Cedros', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Curarén', 8);
@@ -401,7 +401,6 @@ INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Ignacio
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Juan de Flores', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Miguelito', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Santa Ana', 8);
-INSERT INTO Municipality (municipality_name, department_id) VALUES ('Santa Lucía', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Santa Lucía', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Tatumbla', 8);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Valle de Ángeles', 8);
@@ -575,7 +574,7 @@ INSERT INTO Municipality (municipality_name, department_id) VALUES ('Langue', 17
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Francisco de Coray', 17);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('San Lorenzo', 17);
 
--- Municipios de Yoro
+-- Yoro
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Yoro', 18);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('Arenal', 18);
 INSERT INTO Municipality (municipality_name, department_id) VALUES ('El Negrito', 18);
@@ -602,24 +601,93 @@ INSERT INTO Category (category_name) VALUES ('Instrumentos Musicales');
 INSERT INTO Category (category_name) VALUES ('Libros');
 INSERT INTO Category (category_name) VALUES ('Vehículos');
 
-/*********************
+-- Persons
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar
+) VALUES (
+  'Any',
+  'Lorenzana',
+  '1111-1111',
+  'any@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+);
 
-ANTES DE SEGUIR, EJECUTAR EL SCRIPT HASTA INSERTAR LAS CATEGORÍAS,
-LUEGO CREAR UN USUARIO UTILIZANDO EL FORMULARIO DE REGISTRO CON
-LOS SIGUIENTES DATOS:
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar
+) VALUES (
+  'Isaac',
+  'Aguilar',
+  '2222-2222',
+  'ifaguilarnunez@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+);
 
-Nombre: HonduMarket
-Apellido: App
-Teléfono: 1234-5678
-Correo electrónico: hondumarketapp@gmail.com
-Contraseña: (Puede ser cualquiera)
-Departamento: Francisco Morazán
-Municipio: Distrito Central
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar
+) VALUES (
+  'Jazmín',
+  'Maradiaga',
+  '3333-3333',
+  'jazmin@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+);
 
-DESPUÉS IR A LA TABLA 'Person' Y CAMBIAR EL ROL DEL USUARIO DE 2 A 1.
-HECHOS ESTOS PASOS PUEDEN SEGUIR EJECUTANDO EL RESTO DEL SCRIPT.
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar
+) VALUES (
+  'Josué',
+  'Zelaya',
+  '4444-4444',
+  'josue@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+);
 
-*********************/
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar
+) VALUES (
+  'Jovanny',
+  'Rubio',
+  '5555-5555',
+  'jovanny@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+);
+
+-- Persons Address
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (1, 63);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (2, 19);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (3, 110);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (4, 132);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (5, 93);
 
 -- Electrodomésticos
 
@@ -652,7 +720,7 @@ INSERT INTO Product (
   57999.99,
   1,
   1,
-  1
+  2
 );
 
 INSERT INTO Product (
@@ -666,7 +734,7 @@ INSERT INTO Product (
   'Estufa eléctrica Frigidaire',
   'Estufa eléctrica de cerámica con 4 hornillas',
   26599.99,
-  1,
+  2,
   1,
   1
 );
@@ -682,9 +750,9 @@ INSERT INTO Product (
   'Lavadora Whirlpool de carga superior',
   'Lavadora de 12 ciclos para un lavado perfecto',
   16999.99,
+  2,
   1,
-  1,
-  1
+  3
 );
 
 -- Computadoras
@@ -700,7 +768,7 @@ INSERT INTO Product (
   'Microsoft Surface Laptop 5 15"',
   'Laptop con procesador Intel Core i7 de 12va generación, 16GB de RAM DDR5 y disco de estado sólido de 512GB',
   24299.99,
-  1,
+  3,
   2,
   1
 );
@@ -716,7 +784,7 @@ INSERT INTO Product (
   'Apple MacBook Pro 14"',
   'Laptop con procesador Apple M1 Pro, 16GB de RAM DDR5 y disco de estado sólido de 1TB',
   48499.99,
-  1,
+  3,
   2,
   1
 );
@@ -732,7 +800,7 @@ INSERT INTO Product (
   'Dell XPS 15"',
   'Laptop con procesador Intel Core i9 de 12va generación, 16GB de RAM DDR5 y disco de estado sólido de 1TB',
   37599.99,
-  1,
+  4,
   2,
   1
 );
@@ -748,7 +816,7 @@ INSERT INTO Product (
   'HP ENVY 17"',
   'Laptop con procesador Intel Core i7 de 12va generación, 16GB de RAM DDR4 y disco de estado sólido de 1TB',
   31499.99,
-  1,
+  4,
   2,
   1
 );
@@ -766,7 +834,7 @@ INSERT INTO Product (
   'Apple iPhone 14 Pro Max',
   'SmartPhone con 512GB de almacenamiento, cámara de 48MP, red 5G',
   24299.99,
-  1,
+  5,
   3,
   1
 );
@@ -782,9 +850,9 @@ INSERT INTO Product (
   'Samsung Galaxy S22 Ultra',
   'SmartPhone con 128GB de almacenamiento, cámara de 40MP, red 5G',
   28999.99,
-  1,
+  5,
   3,
-  1
+  3
 );
 
 INSERT INTO Product (
@@ -832,7 +900,7 @@ INSERT INTO Product (
   'Call of Duty: Modern Warfare 2',
   'Videojuego first-person shooter para Xbox Series X/S',
   1699.99,
-  1,
+  2,
   4,
   1
 );
@@ -848,7 +916,7 @@ INSERT INTO Product (
   'A Plague Tale: Requiem',
   'Videojuego acción-aventura para Xbox Series X/S',
   1699.99,
-  1,
+  2,
   4,
   1
 );
@@ -864,7 +932,7 @@ INSERT INTO Product (
   'Bayonetta 3',
   'Videojuego acción-aventura para Nintendo Switch',
   1499.99,
-  1,
+  3,
   4,
   1
 );
@@ -880,7 +948,7 @@ INSERT INTO Product (
   'Mario + Rabbids Sparks of Hope',
   'Videojuego acción-aventura para Nintendo Switch',
   1499.99,
-  1,
+  3,
   4,
   1
 );
@@ -1464,4 +1532,254 @@ INSERT INTO Photo (
 ) VALUES (
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667794412/HonduMarket/aohk9kdwigtzuposoq0r.png',
   11
+);
+
+-- Photos (Product 12)
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277773/HonduMarket/e58vath2t7fs5nhz1ad6.png',
+  12
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277770/HonduMarket/jfghipqtmw3k8h6jojhw.png',
+  12
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277771/HonduMarket/afm9c9vqxpyvhfeb5vd6.png',
+  12
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277769/HonduMarket/ashkjvsu0putu9tvvqjh.png',
+  12
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277769/HonduMarket/wwj6yqa4lxn399l2orhz.png',
+  12
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277771/HonduMarket/kth48qxhyv4pfcsc0v5b.png',
+  12
+);
+
+-- Photos (Product 13)
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277205/HonduMarket/iuktv7hxblkxo2x2k4k0.jpg',
+  13
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277205/HonduMarket/p5dqarugmn6hbq228jva.jpg',
+  13
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277206/HonduMarket/hutkzom7iygp8ixur4e6.jpg',
+  13
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277205/HonduMarket/jqadefghni1aoduozwa9.jpg',
+  13
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277205/HonduMarket/rnpoo7uxgk1qiycqxxbs.jpg',
+  13
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668277205/HonduMarket/fggdh6a4z08xswhzrtzq.jpg',
+  13
+);
+
+-- Photos (Product 14)
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278147/HonduMarket/s3cdccxrxsxxnyzj2cms.jpg',
+  14
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278182/HonduMarket/eejuyibudzj3al1cn8hy.jpg',
+  14
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278182/HonduMarket/hzxmplhooekle8xbewml.jpg',
+  14
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278182/HonduMarket/gjjj7owuyylsxdcpxzoc.jpg',
+  14
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278182/HonduMarket/fzm1ifzce9rw4qfsjvlx.jpg',
+  14
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278182/HonduMarket/njm0sgp8pvpldrpanghh.jpg',
+  14
+);
+
+-- Photos (Product 15)
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278415/HonduMarket/sh6ntiy3o3ghfywotr6o.jpg',
+  15
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278414/HonduMarket/kpdbqfji0gb3ng5zilct.jpg',
+  15
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278414/HonduMarket/uzkdigdhsuvpvxysvzyb.jpg',
+  15
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278414/HonduMarket/r6h0kmnwr8wpfjscnpvi.jpg',
+  15
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278414/HonduMarket/bwalenc1vvscptgfjjkh.jpg',
+  15
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668278414/HonduMarket/edltoi3oraxrgopcnosi.jpg',
+  15
+);
+
+-- Photos (Product 16)
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/fssc5ooqjzyjxfph9hpi.jpg',
+  16
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/tjalbgfvgb76dyfkth7w.jpg',
+  16
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/qwt14uw6kuvhmbn9cnf4.jpg',
+  16
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/z1objusqlmkr7iq4gawv.jpg',
+  16
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/kuxkir43mao9fut3ub5t.jpg',
+  16
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/xtd2tnodqs5qvfrxecas.jpg',
+  16
 );

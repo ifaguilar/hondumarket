@@ -8,7 +8,7 @@ import ErrorIllustration from "../assets/error-illustration.png";
 import CustomButton from "../components/CustomButton";
 
 const ErrorPage = () => (
-  <div className="container mx-auto flex justify-center items-center flex-col p-24 gap-12">
+  <div className="container mx-auto mt-16 flex justify-center items-center flex-col p-24 gap-12">
     <img
       className="max-w-lg"
       src={ErrorIllustration}

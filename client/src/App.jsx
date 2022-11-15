@@ -6,16 +6,20 @@ import AuthContext from "./context/AuthContextProvider";
 
 // Components
 import Layout from "./components/Layout";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
+import ChatPage from "./pages/ChatPage";
 import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
+import MyProductsPage from "./pages/MyProductsPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TermsPage from "./pages/TermsPage";
+import WishlistPage from "./pages/WishlistPage";
 
 const App = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -32,8 +36,12 @@ const App = () => {
     <Routes>
       <Route exact path="/" element={<Layout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<ProtectedRoute />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/my-products" element={<MyProductsPage />} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Route>
       <Route
