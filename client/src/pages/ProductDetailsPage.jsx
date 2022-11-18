@@ -56,7 +56,7 @@ const ProductDetailsPage = () => {
     fetchProduct();
     fetchPhotos();
     fetchSeller();
-    verifyWishlist(parseInt(id));
+    auth && verifyWishlist(parseInt(id));
   }, []);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const ProductDetailsPage = () => {
 
       if (data.success) {
         localStorage.setItem("wishlist", JSON.stringify(data.wishlist));
-        verifyWishlist(productId);
+        auth && verifyWishlist(productId);
       } else {
         alert(data.message);
       }
@@ -118,7 +118,7 @@ const ProductDetailsPage = () => {
 
       if (data.success) {
         localStorage.setItem("wishlist", JSON.stringify(data.wishlist));
-        verifyWishlist(productId);
+        auth && verifyWishlist(productId);
       } else {
         alert(data.message);
       }
