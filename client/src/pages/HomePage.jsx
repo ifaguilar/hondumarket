@@ -390,8 +390,8 @@ const HomePage = () => {
                 }}
               >
                 {order
-                  ? "Ordenar por: Más antiguos"
-                  : "Ordenar por: Más recientes"}
+                  ? "Ordenados por: Más antiguos"
+                  : "Ordenados por: Más recientes"}
               </button>
             </div>
           </div>
