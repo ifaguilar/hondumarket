@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
       <div className="flex flex-col gap-6 p-8">
         <h3 className="text-sm font-medium">{product.product_name}</h3>
         <span className="text-2xl font-bold">
-          L. {new Intl.NumberFormat().format(product.price)}
+          L. {new Intl.NumberFormat("EN-US").format(product.price)}
         </span>
         <div className="flex items-center gap-2">
           <IconContext.Provider
