@@ -4,6 +4,22 @@ import db from "../database/db.js";
 // Initializing .env
 dotenv.config();
 
+export const getUsers = async (req, res) => {
+  try {
+    const users = await db.query(
+      "SELECT id, first_name, last_name, email FROM Person WHERE is_active = TRUE"
+    );
+
+    res.status(200).json({
+      success: true,
+      users: users.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getProducts = async (req, res) => {
   try {
     const userProducts = await db.query(
@@ -20,6 +36,7 @@ export const getProducts = async (req, res) => {
         WHERE Photo.product_id = Product.id
       )
       AND Product.person_id = $1
+      AND Product.is_active = TRUE
       ORDER BY Product.created_at`,
       [req.params.id]
     );

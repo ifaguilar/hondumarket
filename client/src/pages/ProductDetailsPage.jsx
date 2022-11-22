@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
 // Icons
-import { IconContext } from "react-icons";
-import { BsFillGeoAltFill } from "react-icons/bs";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
@@ -148,7 +146,7 @@ const ProductDetailsPage = () => {
           <PuffLoader color={"#3B82F6"} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 items-start gap-16">
+        <div className="grid grid-cols-[624px_1fr] items-start gap-16">
           <div className="flex flex-col gap-8">
             <img
               className="aspect-square w-full rounded-xl object-contain bg-white"
@@ -178,29 +176,59 @@ const ProductDetailsPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-8 sticky top-20">
-            <div className="flex flex-col gap-8 bg-white p-12 rounded-xl shadow">
-              <div>
-                <div
-                  className={`inline-block px-2 py-1 text-xs font-medium rounded ${
-                    product.condition_name === "Nuevo"
-                      ? "bg-green-100 text-green-600"
-                      : product.condition_name === "Semi-usado"
-                      ? "bg-yellow-100 text-yellow-600"
-                      : "bg-red-100 text-red-600"
-                  }`}
-                >
-                  <span>{product.condition_name}</span>
-                </div>
+          <div className="grid grid-cols-[384px_1fr] bg-white p-12 rounded-xl shadow sticky top-20">
+            <div className="flex flex-col gap-12 pr-6">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-3xl">{product.product_name}</h1>
+
+                <span className="text-2xl font-bold">
+                  L. {new Intl.NumberFormat().format(product.price)}
+                </span>
               </div>
 
-              <h1 className="text-2xl">{product.product_name}</h1>
+              <div className="flex flex-col gap-4">
+                <span className="font-medium">Descripción del producto:</span>
+                <p className="text-gray-500">{product.product_description}</p>
+              </div>
 
-              <p className="text-3xl font-bold">
-                L. {new Intl.NumberFormat().format(product.price)}
-              </p>
+              <div className="flex flex-col gap-4">
+                <span className="font-medium">
+                  Información adicional del producto:
+                </span>
 
-              <p>{product.product_description}</p>
+                <div className="flex gap-2 items-center">
+                  <span className="text-sm text-gray-500">Categoría:</span>
+                  <span className="text-sm text-gray-500">
+                    {product.category_name}
+                  </span>
+                </div>
+
+                <div className="flex gap-2 items-center">
+                  <span className="text-sm text-gray-500">
+                    Fecha de publicación:
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {new Intl.DateTimeFormat("es-HN", {
+                      dateStyle: "long",
+                    }).format(new Date(product.created_at))}
+                  </span>
+                </div>
+
+                <div className="flex gap-2 items-center">
+                  <span className="text-sm text-gray-500">Estado:</span>
+                  <div
+                    className={`px-2 py-1 text-xs font-medium rounded ${
+                      product.condition_name === "Nuevo"
+                        ? "bg-green-100 text-green-600"
+                        : product.condition_name === "Semi-usado"
+                        ? "bg-yellow-100 text-yellow-600"
+                        : "bg-red-100 text-red-600"
+                    }`}
+                  >
+                    <span>{product.condition_name}</span>
+                  </div>
+                </div>
+              </div>
 
               <div>
                 {auth &&
@@ -208,7 +236,7 @@ const ProductDetailsPage = () => {
                 isProductInWishlist ? (
                   <CustomButton
                     type="button"
-                    variant="muted"
+                    variant="danger"
                     onClick={() => removeFromWishlist()}
                   >
                     Eliminar de lista de deseos
@@ -226,43 +254,44 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 bg-white p-12 rounded-xl shadow">
-              <div className="flex flex-col gap-4 items-center justify-center">
+            <div className="flex flex-col gap-4 border-l-[1px] border-gray-20 pl-6">
+              <span className="font-medium">Información del vendedor:</span>
+              <div className="flex gap-4 items-center">
                 <img
                   alt="Avatar"
                   src={seller.avatar}
-                  className="h-24 w-24 rounded-full object-cover mr-2"
+                  className="h-16 w-16 rounded-full object-cover"
                 />
-                <p className="text-lg font-medium">
+                <p>
                   {seller.first_name} {seller.last_name}
                 </p>
-                <div className="flex items-center gap-2">
-                  <IconContext.Provider
-                    value={{
-                      className: "text-gray-400",
-                      size: "16px",
-                    }}
-                  >
-                    <div>
-                      <BsFillGeoAltFill />
-                    </div>
-                  </IconContext.Provider>
-                  <span className="text-sm text-gray-400">
-                    {product.municipality_name}, {product.department_name}
-                  </span>
-                </div>
               </div>
-              <div className="flex flex-col gap-12 items-center justify-center">
+
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-500">Departamento:</span>
+                <span className="text-sm text-gray-500">
+                  {product.department_name}
+                </span>
+              </div>
+
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-gray-500">Municipio:</span>
+                <span className="text-sm text-gray-500">
+                  {product.municipality_name}
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-8 mt-8">
                 {auth &&
                 seller.id !== JSON.parse(localStorage.getItem("user")).id ? (
-                  <>
-                    <CustomButton type="button" variant="primary">
-                      Contactar vendedor
-                    </CustomButton>
-                    <CustomButton type="button" variant="secondary">
-                      Denunciar vendedor
-                    </CustomButton>
-                  </>
+                  <CustomButton type="button" variant="primary">
+                    Contactar al vendedor
+                  </CustomButton>
+                ) : null}
+                {auth ? (
+                  <CustomButton type="button" variant="secondary">
+                    Ir al perfil del vendedor
+                  </CustomButton>
                 ) : null}
               </div>
             </div>

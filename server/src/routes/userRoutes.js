@@ -4,6 +4,7 @@ import { Router } from "express";
 import {
   addToWishlist,
   getProducts,
+  getUsers,
   getWishlist,
   getWishlistProducts,
   removeFromWishlist,
@@ -12,6 +13,7 @@ import {
 const router = Router();
 
 // Routes
+router.get("/", getUsers);
 router.get("/:id/products", getProducts);
 router.get("/:id/wishlist", getWishlist);
 router.get("/:id/wishlist/products", getWishlistProducts);

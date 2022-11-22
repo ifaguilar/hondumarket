@@ -27,11 +27,44 @@ const MyProductsPage = () => {
     }
   };
 
+  const deactivateProduct = async (productId, body) => {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+
+    const data = await response.json();
+
+    return data;
+  };
+
   useEffect(() => {
     if (auth) {
       fetchUserProducts();
     }
   }, []);
+
+  const removeUserProduct = async (productId) => {
+    try {
+      const body = {
+        productId,
+      };
+
+      const data = await deactivateProduct(productId, body);
+
+      if (data.success) {
+        fetchUserProducts();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <div className="container mx-auto mt-16 py-16 min-h-screen">
@@ -58,6 +91,13 @@ const MyProductsPage = () => {
                   </CustomButton>
                 </Link>
               </div>
+              <CustomButton
+                type="button"
+                variant="danger"
+                onClick={() => removeUserProduct(product.id)}
+              >
+                Dar de baja producto
+              </CustomButton>
             </div>
           ))}
         </div>
