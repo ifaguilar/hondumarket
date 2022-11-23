@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
       </Link>
       <div className="flex flex-col gap-4 p-8">
         <span className="text-2xl font-bold">
-          L. {new Intl.NumberFormat().format(product.price)}
+          L. {new Intl.NumberFormat("ES-HN").format(product.price)}
         </span>
         <h3 className="font-medium">{product.product_name}</h3>
         <div className="flex gap-2 items-center">
