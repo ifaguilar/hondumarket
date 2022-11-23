@@ -89,7 +89,7 @@ const WishlistPage = () => {
               </div>
               <CustomButton
                 type="button"
-                variant="muted"
+                variant="danger"
                 onClick={() => removeFromWishlist(product.id)}
               >
                 Eliminar de lista de deseos

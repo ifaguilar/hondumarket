@@ -19,7 +19,7 @@ body {
 }
 
 .btn-secondary:hover {
-  @apply bg-blue-200/80;
+  @apply bg-blue-100/80;
 }
 
 .btn-success {
@@ -28,6 +28,14 @@ body {
 
 .btn-success:hover {
   @apply bg-green-500/90;
+}
+
+.btn-danger {
+  @apply bg-red-500 text-white;
+}
+
+.btn-danger:hover {
+  @apply bg-red-500/90;
 }
 
 .btn-muted {

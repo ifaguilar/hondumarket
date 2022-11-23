@@ -2,6 +2,14 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import cron from "node-cron";
+import path from "path";
+import {
+  generatePDF,
+  getSubscriptions,
+  getUsers,
+} from "./src/utils/generatePDF.js";
+import transporter from "./src/utils/nodemailerGenerator.js";
 
 // Importing routes
 import authRoutes from "./src/routes/authRoutes.js";
@@ -32,3 +40,46 @@ app.use("/api/subscriptions", subscriptionRoutes);
 
 // Listening for requests
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// Sends email every Wednesday at 12:30
+cron.schedule("30 12 * * WED", async () => {
+  const users = await getUsers();
+
+  users.map(async (user) => {
+    const subscriptions = await getSubscriptions(user);
+
+    if (subscriptions.length !== 0) {
+      let pdfName = await generatePDF(user, subscriptions);
+
+      let mailOptions = {
+        from: `"HonduMarket" ${process.env.MAIL_USER}`,
+        to: user.email,
+        subject: "Suscripciones | HonduMarket",
+        text: `¡Hola, ${user.first_name} ${user.last_name}!`,
+        template: "simpleTemplate",
+        context: {
+          user: user,
+          body: `Como es constumbre cada semana, hemos recopilado una lista de los últimos
+        productos de cada categoría a las que te has suscrito.`,
+        },
+        attachments: [
+          {
+            filename: `${pdfName}`,
+            path: path
+              .join(process.cwd(), `./src/pdf/${pdfName}`)
+              .replace(/\\/g, "/"),
+            contentType: "application/pdf",
+          },
+        ],
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error(error.message);
+        } else {
+          console.log("Correo enviado: " + info.response);
+        }
+      });
+    }
+  });
+});

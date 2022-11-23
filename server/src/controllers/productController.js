@@ -30,7 +30,7 @@ export const getProducts = async (req, res) => {
         SELECT MIN(Photo.id)
         FROM Photo
         WHERE Photo.product_id = Product.id
-      )
+      ) AND Product.is_active = TRUE
       ORDER BY Product.created_at, Product.id DESC`
     );
 
@@ -47,12 +47,14 @@ export const getProduct = async (req, res) => {
       `
       SELECT
         Product.*,
+        Category.category_name,
         Condition.condition_name,
         Person_Address.municipality_id,
         Municipality.municipality_name,
         Municipality.department_id,
         Department.department_name
       FROM Product
+      JOIN Category ON Category.id = Product.category_id
       JOIN Condition ON Condition.id = Product.condition_id
       JOIN Person_Address ON Person_Address.person_id = Product.person_id
       JOIN Municipality ON Municipality.id = Person_Address.municipality_id
@@ -101,6 +103,21 @@ export const getSeller = async (req, res) => {
     );
 
     res.status(200).json(seller.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deactivateProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+
+    await db.query("UPDATE Product SET is_active = FALSE WHERE id = $1", [
+      productId,
+    ]);
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: error.message });
