@@ -324,18 +324,12 @@ const ProductDetailsPage = () => {
                   src={seller.avatar}
                   className="h-16 w-16 rounded-full object-cover"
                 />
-
                 <div className="flex flex-col">
                   <p>
                     {seller.first_name} {seller.last_name}
                   </p>
                   {getSellerRateSection()}
                 </div>
-
-                <p>
-                  {seller.first_name} {seller.last_name}
-                </p>
-
               </div>
 
               <div className="flex gap-2 items-center">
@@ -360,7 +354,6 @@ const ProductDetailsPage = () => {
                   </CustomButton>
                 ) : null}
                 {auth ? (
-
                   <>
                     <CustomButton type="button" variant="secondary">
                       Ir al perfil del vendedor
@@ -388,11 +381,6 @@ const ProductDetailsPage = () => {
                       </CustomButton>
                     </div>
                   </>
-
-                  <CustomButton type="button" variant="secondary">
-                    Ir al perfil del vendedor
-                  </CustomButton>
-
                 ) : null}
               </div>
             </div>
