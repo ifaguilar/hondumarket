@@ -8,11 +8,11 @@ import PuffLoader from "react-spinners/PuffLoader";
 import AuthContext from "../context/AuthContextProvider";
 
 // Components
-import CustomButton from "../components/CustomButton";
-import RateSeller from "../components/RateSeller";
-import Modal from "../components/Modal";
-import ComplaintSeller from "../components/ComplaintSeller";
 import { AiFillStar } from "react-icons/ai";
+import ComplaintSeller from "../components/ComplaintSeller";
+import CustomButton from "../components/CustomButton";
+import Modal from "../components/Modal";
+import RateSeller from "../components/RateSeller";
 
 const ProductDetailsPage = () => {
   const { auth } = useContext(AuthContext);
@@ -58,20 +58,19 @@ const ProductDetailsPage = () => {
 
     const sellerRateData = await fetchSellerRate(data.id);
     const dataWithRate = {
-        ...data,
-        ...sellerRateData
-    } 
+      ...data,
+      ...sellerRateData,
+    };
 
     setSeller(dataWithRate);
   };
 
   //Rating info:
   const fetchSellerRate = async (sellerID) => {
-
     if (!sellerID) return {};
 
     const response = await fetch(
-        `http://localhost:3000/api/users/${sellerID}/rating/seller`
+      `http://localhost:3000/api/users/${sellerID}/rating/seller`
     );
 
     const data = await response.json();
@@ -80,16 +79,15 @@ const ProductDetailsPage = () => {
   };
 
   const afterRateSellerHandler = async () => {
-
     const sellerRateData = await fetchSellerRate(seller.id);
 
     const dataWithRate = {
-        ...seller,
-        ...sellerRateData
-    } 
+      ...seller,
+      ...sellerRateData,
+    };
 
     setSeller(dataWithRate);
-  }
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -181,23 +179,18 @@ const ProductDetailsPage = () => {
   };
 
   const getSellerRateSection = () => {
-
     const reviewAmount = Number(seller?.reviews_amount);
 
     if (!seller?.rate_average || reviewAmount < 1) return null;
 
     return (
-        <div className="flex items-center flex-wrap gap-1">
-            <p className="flex flex-nowrap items-center gap-1 text-xs text-slate-600">
-                {Number.parseFloat(seller.rate_average).toFixed(1)}/5
-                <AiFillStar
-                    style={{ color: "orange", transform: "scale(1.1)" }}
-                />
-            </p>
-            <p className="text-xs text-slate-600">
-                ({reviewAmount} reviews)
-            </p>
-        </div>
+      <div className="flex items-center flex-wrap gap-1">
+        <p className="flex flex-nowrap items-center gap-1 text-xs text-slate-600">
+          {Number.parseFloat(seller.rate_average).toFixed(1)}/5
+          <AiFillStar style={{ color: "orange", transform: "scale(1.1)" }} />
+        </p>
+        <p className="text-xs text-slate-600">({reviewAmount} reviews)</p>
+      </div>
     );
   };
 
@@ -349,37 +342,25 @@ const ProductDetailsPage = () => {
               <div className="flex flex-col gap-8 mt-8">
                 {auth &&
                 seller.id !== JSON.parse(localStorage.getItem("user")).id ? (
-                  <CustomButton type="button" variant="primary">
-                    Contactar al vendedor
-                  </CustomButton>
-                ) : null}
-                {auth ? (
                   <>
-                    <CustomButton type="button" variant="secondary">
-                      Ir al perfil del vendedor
+                    <CustomButton type="button" variant="primary">
+                      Contactar al vendedor
+                    </CustomButton>
+                    <CustomButton
+                      type="button"
+                      variant="secondary"
+                      onClick={() => setOpenRatingModal(true)}
+                    >
+                      Calificar al vendedor
                     </CustomButton>
 
-                    <div className="flex flex-col gap-2">
-                      <CustomButton
-                          type="button"
-                          variant="secondary"
-                          onClick={() =>
-                              setOpenRatingModal(true)
-                          }
-                      >
-                          Calificar al vendedor
-                      </CustomButton>
-
-                      <CustomButton
-                          type="button"
-                          className="bg-red-100 text-red-600 hover:bg-red-200/80"
-                          onClick={() =>
-                              setOpenComplaintgModal(true)
-                          }
-                      >
-                          Denunciar al vendedor
-                      </CustomButton>
-                    </div>
+                    <CustomButton
+                      type="button"
+                      variant="danger"
+                      onClick={() => setOpenComplaintgModal(true)}
+                    >
+                      Denunciar al vendedor
+                    </CustomButton>
                   </>
                 ) : null}
               </div>
@@ -387,10 +368,7 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       )}
-      <Modal
-        open={openRatingModal}
-        close={() => setOpenRatingModal(false)}
-      >
+      <Modal open={openRatingModal} close={() => setOpenRatingModal(false)}>
         <RateSeller
           sellerInfo={seller}
           closeModalHandler={setOpenRatingModal}

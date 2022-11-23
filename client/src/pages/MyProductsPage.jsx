@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PuffLoader from "react-spinners/PuffLoader";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
@@ -10,6 +11,7 @@ import CustomButton from "../components/CustomButton";
 const MyProductsPage = () => {
   const { auth } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(true);
   const [userProducts, setUserProducts] = useState([]);
 
   const fetchUserProducts = async () => {
@@ -43,10 +45,14 @@ const MyProductsPage = () => {
   };
 
   useEffect(() => {
-    if (auth) {
-      fetchUserProducts();
-    }
+    fetchUserProducts();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
+  });
 
   const removeUserProduct = async (productId) => {
     try {
@@ -68,40 +74,51 @@ const MyProductsPage = () => {
 
   return (
     <div className="container mx-auto mt-16 py-16 min-h-screen">
-      <div className="p-12 bg-white rounded-lg shadow">
-        <h2 className="text-3xl font-bold">Mis productos</h2>
-        <div className="flex flex-col gap-12 mt-12">
-          {userProducts.map((product, index) => (
-            <div key={product.id} className="flex gap-4 items-center">
-              <p className="w-6">{index + 1}</p>
-              <img
-                className="w-16 h-16 object-contain"
-                src={product.photo}
-                alt={product.product_name}
-                loading="lazy"
-              />
-              <p className="w-96">{product.product_name}</p>
-              <p className="w-64">
-                L. {new Intl.NumberFormat().format(product.price)}
-              </p>
-              <div className="w-96">
-                <Link to={`/product/${product.id}`}>
-                  <CustomButton type="button" variant="primary">
-                    Ver producto
-                  </CustomButton>
-                </Link>
-              </div>
-              <CustomButton
-                type="button"
-                variant="danger"
-                onClick={() => removeUserProduct(product.id)}
-              >
-                Dar de baja producto
-              </CustomButton>
-            </div>
-          ))}
+      {loading ? (
+        <div className="flex align-center justify-center">
+          <PuffLoader color={"#3B82F6"} />
         </div>
-      </div>
+      ) : (
+        <div className="p-12 bg-white rounded-lg shadow">
+          <h2 className="text-3xl font-bold">Mis productos</h2>
+          <div className="flex flex-col gap-12 mt-12">
+            {userProducts.length !== 0 ? (
+              userProducts.map((product, index) => (
+                <div key={product.id} className="flex gap-4 items-center">
+                  <p className="w-6">{index + 1}</p>
+                  <img
+                    className="w-16 h-16 object-contain"
+                    src={product.photo}
+                    alt={product.product_name}
+                    loading="lazy"
+                  />
+                  <p className="w-96">{product.product_name}</p>
+                  <p className="w-64">
+                    L. {new Intl.NumberFormat().format(product.price)}
+                  </p>
+                  <div className="w-96">
+                    <Link to={`/product/${product.id}`}>
+                      <CustomButton type="button" variant="primary">
+                        Ver producto
+                      </CustomButton>
+                    </Link>
+                  </div>
+                  <CustomButton
+                    type="button"
+                    variant="danger"
+                    onClick={() => removeUserProduct(product.id)}
+                  >
+                    Dar de baja producto
+                  </CustomButton>
+                </div>
+              ))
+            ) : (
+              <p>No tienes productos en venta.</p>
+            )}
+            {}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

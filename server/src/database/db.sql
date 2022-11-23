@@ -219,7 +219,6 @@ CREATE TABLE Chat_Message(
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
-
 -- Table Complaint
 CREATE TABLE Complaints (
 	id SERIAL PRIMARY KEY,
@@ -233,7 +232,6 @@ CREATE TABLE Complaints (
 	foreign key (reviewer_id) references person (id),
 	UNIQUE (person_id, reviewer_id)
 );
-
 
 -- Roles
 INSERT INTO Person_Role (role_name) VALUES ('admin');
