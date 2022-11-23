@@ -244,7 +244,7 @@ const ProductDetailsPage = () => {
                 <h1 className="text-3xl">{product.product_name}</h1>
 
                 <span className="text-2xl font-bold">
-                  L. {new Intl.NumberFormat().format(product.price)}
+                  L. {new Intl.NumberFormat("ES-HN").format(product.price)}
                 </span>
               </div>
 

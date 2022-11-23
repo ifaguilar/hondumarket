@@ -21,15 +21,15 @@ const RateSeller = ({
             case 0:
                 return "Evaluar";
             case 1:
-                return "Dissatifation";
+                return "Muy Insatisfecho";
             case 2:
-                return "Unsatisfied";
+                return "Insatisfecho";
             case 3:
                 return "Normal";
             case 4:
-                return "Satisfied";
+                return "Satisfecho";
             case 5:
-                return "Very Satisfied";
+                return "Muy satisfecho";
             default:
                 return "Evaluate";
         }
@@ -38,16 +38,16 @@ const RateSeller = ({
     const handlePlaceHolder = () => {
         switch (rateNumber || hoverStar) {
             case 0:
-                return "Comment here...";
+                return "Commente aqui...";
             case 1:
             case 2:
             case 3:
             case 4:
-                return "What is your problem?";
+                return "Cual es su problema?";
             case 5:
-                return "Why do you like the product?";
+                return "¿Por qué le gusta el producto?";
             default:
-                return "Comment here...";
+                return "Commente aqui..";
         }
     };
 
