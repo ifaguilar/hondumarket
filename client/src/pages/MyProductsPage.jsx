@@ -115,7 +115,6 @@ const MyProductsPage = () => {
             ) : (
               <p>No tienes productos en venta.</p>
             )}
-            {}
           </div>
         </div>
       )}

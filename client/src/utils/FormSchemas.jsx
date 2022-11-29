@@ -81,3 +81,16 @@ export const ResetPasswordFormSchema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden.")
     .required("Requerido."),
 });
+
+export const CategoryFormSchema = yup.object().shape({
+  categoryName: yup
+    .string()
+    .min(3, "El nombre debe contener al menos 3 caracteres.")
+    .required("Requerido."),
+  isActive: yup.string().required("Requerido."),
+});
+
+export const ProductFormSchema = yup.object().shape({
+  expirationDate: yup.string().required("Requerido."),
+  isActive: yup.string().required("Requerido."),
+});

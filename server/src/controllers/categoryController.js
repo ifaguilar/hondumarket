@@ -6,7 +6,20 @@ dotenv.config();
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await db.query("SELECT * FROM Category");
+    const categories = await db.query(
+      "SELECT * FROM Category WHERE is_active = TRUE ORDER BY id"
+    );
+
+    res.status(200).json(categories.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getCategoriesDashboard = async (req, res) => {
+  try {
+    const categories = await db.query("SELECT * FROM Category ORDER BY id");
 
     res.status(200).json(categories.rows);
   } catch (error) {
@@ -44,6 +57,22 @@ export const getTopProducts = async (req, res) => {
       success: true,
       topProducts: topProducts.rows,
     });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateCategory = async (req, res) => {
+  try {
+    const { categoryId, categoryName, isActive } = req.body;
+
+    await db.query(
+      "UPDATE Category SET category_name = $1, modified_at = NOW(), is_active = $2 WHERE id = $3",
+      [categoryName, isActive, categoryId]
+    );
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: error.message });

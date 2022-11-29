@@ -14,6 +14,7 @@ export const getProducts = async (req, res) => {
         Product.price,
         Product.created_at,
         Product.category_id,
+        Category.category_name,
         Condition.condition_name,
         Photo.photo,
         Person_Address.municipality_id,
@@ -21,6 +22,7 @@ export const getProducts = async (req, res) => {
         Municipality.department_id,
         Department.department_name
       FROM Product
+      JOIN Category ON Category.id = Product.category_id
       JOIN Condition ON Condition.id = Product.condition_id
       JOIN Photo ON Photo.product_id = Product.id
       JOIN Person_Address ON Person_Address.person_id = Product.person_id
@@ -31,7 +33,43 @@ export const getProducts = async (req, res) => {
         FROM Photo
         WHERE Photo.product_id = Product.id
       ) AND Product.is_active = TRUE
+      AND Category.is_active = TRUE
       ORDER BY Product.created_at, Product.id DESC`
+    );
+
+    res.status(200).json(products.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getProductsDashboard = async (req, res) => {
+  try {
+    const products = await db.query(
+      `
+      SELECT
+        Product.*,
+        Category.category_name,
+        Condition.condition_name,
+        Photo.photo,
+        Person_Address.municipality_id,
+        Municipality.municipality_name,
+        Municipality.department_id,
+        Department.department_name
+      FROM Product
+      JOIN Category ON Category.id = Product.category_id
+      JOIN Condition ON Condition.id = Product.condition_id
+      JOIN Photo ON Photo.product_id = Product.id
+      JOIN Person_Address ON Person_Address.person_id = Product.person_id
+      JOIN Municipality ON Municipality.id = Person_Address.municipality_id
+      JOIN Department ON Department.id = Municipality.department_id
+      WHERE Photo.id = (
+        SELECT MIN(Photo.id)
+        FROM Photo
+        WHERE Photo.product_id = Product.id
+      )
+      ORDER BY Product.id`
     );
 
     res.status(200).json(products.rows);
@@ -103,6 +141,27 @@ export const getSeller = async (req, res) => {
     );
 
     res.status(200).json(seller.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { productId, expirationDate, isActive } = req.body;
+
+    const datetime = expirationDate.split("T");
+    const date = datetime[0];
+    const time = datetime[1];
+    const newExpirationDate = `${date} ${time}`;
+
+    await db.query(
+      "UPDATE Product SET expiration_date = TO_TIMESTAMP($1, 'YYYY-MM-DD HH24:MI:SS'), is_active = $2 WHERE id = $3",
+      [newExpirationDate, isActive, productId]
+    );
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: error.message });

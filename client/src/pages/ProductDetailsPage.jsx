@@ -343,9 +343,9 @@ const ProductDetailsPage = () => {
                 {auth &&
                 seller.id !== JSON.parse(localStorage.getItem("user")).id ? (
                   <>
-                    <CustomButton type="button" variant="primary">
+                    {/* <CustomButton type="button" variant="primary">
                       Contactar al vendedor
-                    </CustomButton>
+                    </CustomButton> */}
                     <CustomButton
                       type="button"
                       variant="secondary"

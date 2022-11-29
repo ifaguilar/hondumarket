@@ -5,6 +5,7 @@ import CustomButton from "./CustomButton";
 // Icons
 import { IconContext } from "react-icons";
 import {
+  BsBarChartLineFill,
   BsBoxArrowInLeft,
   BsFillChatFill,
   BsFillHeartFill,
@@ -137,6 +138,25 @@ const Navbar = () => {
                       <span>Perfil</span>
                     </li>
                   </Link>
+                  {auth &&
+                  JSON.parse(localStorage.getItem("user")).roleId === 1 ? (
+                    <Link to="/dashboard">
+                      <li
+                        className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                        onClick={() => setOpen(false)}
+                      >
+                        <IconContext.Provider
+                          value={{
+                            className: "text-gray-700",
+                            size: "16px",
+                          }}
+                        >
+                          <BsBarChartLineFill />
+                        </IconContext.Provider>
+                        <span>Dashboard</span>
+                      </li>
+                    </Link>
+                  ) : null}
                   <Link to="/chat">
                     <li
                       className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
