@@ -143,7 +143,7 @@ const CategoriesPage = () => {
                 </div>
                 <div className="flex flex-col gap-8">
                   <h3 className="text-xl font-bold">Campos editables</h3>
-                  <div className="grid grid-cols-2">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-16">
                     <CustomInput
                       label="Nombre de categoría"
                       type="text"

@@ -14,7 +14,6 @@ import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
-import MyProductsPage from "./pages/MyProductsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -39,13 +38,30 @@ const App = () => {
     <Routes>
       <Route exact path="/" element={<Layout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/dashboard/categories" element={<CategoriesPage />} />
-        <Route path="/dashboard/products" element={<ProductsPage />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/my-products" element={<MyProductsPage />} />
+        <Route
+          path="/wishlist"
+          element={auth ? <WishlistPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile"
+          element={auth ? <ProfilePage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard"
+          element={auth ? <DashboardPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/categories"
+          element={auth ? <CategoriesPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/products"
+          element={auth ? <ProductsPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/chat"
+          element={auth ? <ChatPage /> : <Navigate to="/" />}
+        />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="*" element={<ErrorPage />} />

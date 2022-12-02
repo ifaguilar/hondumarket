@@ -125,7 +125,7 @@ const HomePage = () => {
     .filter((product) =>
       search.toLowerCase() === ""
         ? product
-        : product.product_name.toLowerCase().includes(search)
+        : product.product_name.toLowerCase().includes(search.toLowerCase())
     );
 
   const lastProductIndex = currentPage * productsPerPage;

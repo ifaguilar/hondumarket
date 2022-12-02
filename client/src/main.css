@@ -23,11 +23,11 @@ body {
 }
 
 .btn-success {
-  @apply bg-green-500 text-white;
+  @apply bg-green-200/80 text-green-600;
 }
 
 .btn-success:hover {
-  @apply bg-green-500/90;
+  @apply bg-green-200/60;
 }
 
 .btn-danger {
