@@ -4,7 +4,9 @@ import { BsCheckCircleFill } from "react-icons/bs";
 import { MdError } from "react-icons/md";
 import { ClockLoader } from "react-spinners";
 import CustomButton from "./CustomButton";
+
 import ModalStatus from "./ModalStatus";
+
 
 const RateSeller = ({
   sellerInfo,
@@ -14,7 +16,11 @@ const RateSeller = ({
   const [rateNumber, setRateNumber] = useState(0);
   const [hoverStar, setHoverStar] = useState(0);
   const [description, setDescription] = useState("");
+
   const [modalStatus, setmodalStatus] = useState("unsent");
+
+  const [contentStatus, setContentStatus] = useState("unsent");
+
   const [statusDescription, setStatusDescription] = useState("");
 
   const getRateText = () => {
@@ -60,7 +66,11 @@ const RateSeller = ({
       return;
     }
 
+
     setmodalStatus("loader");
+
+    setContentStatus("loader");
+
 
     const res = await fetch(`http://localhost:3000/api/users/rate`, {
       method: "POST",
@@ -75,15 +85,25 @@ const RateSeller = ({
 
     const data = await res.json();
 
+
     setmodalStatus(
       data.isAdded || data.isUpdated ? "success" : "error"
+
+    setContentStatus(
+      data.isAdded ? "success" : data.isAlreadyExists ? "warning" : "error"
+
     );
 
     setStatusDescription(
       data.isAdded
         ? "Gracias por calificar a este vendedor, tu opinion es muy valiosa para nosotros."
+
         : data.isUpdated
         ? "Su calificacion ha sido correctamente actualizada"
+
+        : data.isAlreadyExists
+        ? "Lo sentimos, ya has calificado a este vendedor anteriormente."
+
         : data.error.message
     );
 
@@ -139,11 +159,18 @@ const RateSeller = ({
         </div>
 
         <textarea
+
 			className="p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 			placeholder={handlePlaceHolder()}
 			rows="4"
 			onChange={(evt) => setDescription(evt.target.value)}
 			value={description}
+
+          className="w-64 border border-solid border-slate-400 rounded p-2"
+          placeholder={handlePlaceHolder()}
+          onChange={(evt) => setDescription(evt.target.value)}
+          value={description}
+
         />
 
         <div className="flex gap-5">
@@ -157,6 +184,7 @@ const RateSeller = ({
   };
 
   const getStatusContent = () => {
+
 	return (
 		<ModalStatus
 			status={modalStatus}
@@ -165,6 +193,24 @@ const RateSeller = ({
 		/>
 	);
 };
+
+    return (
+      <div className="flex flex-col gap-10 items-center mt-6">
+        {contentStatus === "success" ? (
+          <BsCheckCircleFill className="scale-[3] text-green-500" />
+        ) : contentStatus === "warning" ? (
+          <MdError className="scale-[4] text-yellow-500" />
+        ) : (
+          <MdError className="scale-[4] text-red-500" />
+        )}
+
+        <p className="text-center font-medium">{statusDescription}</p>
+
+        {getCloseBtn()}
+      </div>
+    );
+  };
+
 
   const getLoaderContent = () => {
     return <ClockLoader color="rgb(59, 130, 246)" />;
@@ -178,12 +224,21 @@ const RateSeller = ({
           {sellerInfo.first_name} {sellerInfo.last_name}
         </p>
 
+
         {modalStatus === "loader" && getLoaderContent()}
 
         {modalStatus == "unsent" && getInputConent()}
 
         {modalStatus != "unsent" &&
           modalStatus != "loader" &&
+
+        {contentStatus === "loader" && getLoaderContent()}
+
+        {contentStatus == "unsent" && getInputConent()}
+
+        {contentStatus != "unsent" &&
+          contentStatus != "loader" &&
+
           getStatusContent()}
       </div>
     </div>

@@ -126,6 +126,92 @@ export const updateUser = async (req, res) => {
   }
 };
 
+export const updateUser = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      phone,
+      email,
+      password,
+      municipalityId,
+      avatar,
+    } = req.body;
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    let updatedUser = "";
+
+    if (avatar) {
+      const response = await cloudinary.uploader.upload(
+        `D:\\Downloads\\${avatar}`,
+        {
+          upload_preset: "dev_setup",
+        }
+      );
+
+      const avatarURL = response.secure_url.replace(".webp", ".png");
+
+      updatedUser = await db.query(
+        `UPDATE Person
+        SET
+          first_name = $1,
+          last_name = $2,
+          phone = $3,
+          email = $4,
+          psswrd = $5,
+          avatar = $6,
+          modified_at = NOW()
+        WHERE id = $7
+        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
+        [
+          firstName,
+          lastName,
+          phone,
+          email,
+          hashedPassword,
+          avatarURL,
+          req.params.id,
+        ]
+      );
+    } else {
+      updatedUser = await db.query(
+        `UPDATE Person
+        SET
+          first_name = $1,
+          last_name = $2,
+          phone = $3,
+          email = $4,
+          psswrd = $5,
+          modified_at = NOW()
+        WHERE id = $6
+        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
+        [firstName, lastName, phone, email, hashedPassword, req.params.id]
+      );
+    }
+
+    const updatedUserAddress = await db.query(
+      `
+      UPDATE Person_Address
+      SET municipality_id = $1
+      WHERE person_id = $2
+      RETURNING *
+    `,
+      [municipalityId, req.params.id]
+    );
+
+    res.status(200).json({
+      success: true,
+      updatedUser: updatedUser.rows[0],
+      updatedUserAddress: updatedUserAddress.rows[0],
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getProducts = async (req, res) => {
   try {
     const userProducts = await db.query(
@@ -302,6 +388,7 @@ export const getAverageUserRating = async (req, res) => {
   }
 };
 
+
 export const updateRating = async (req, res) => {
 	try {
 
@@ -356,15 +443,36 @@ export const addUserRating = async (req, res, next) => {
 			return next();
 		}
 
-		const resDB = await db.query(
-			`INSERT INTO 
+export const addUserRating = async (req, res) => {
+  try {
+    const { userId, sellersId, description, rateNumber } = req.body;
+
+    const isAdded = await db.query(
+      `
+			SELECT * FROM person_rating WHERE person_id= $1 AND reviewer_id =$2;
+		`,
+      [sellersId, userId]
+    );
+
+
+    if (isAdded.rowCount) {
+      return res.status(400).json({
+        ok: true,
+        isAdded: false,
+        isAlreadyExists: true,
+      });
+    }
+
+    const resDB = await db.query(
+      `INSERT INTO 
 				person_rating (person_id, reviewer_id, rating_id, description) 
 				VALUES ($1, $2, $3, $4)`,
-			[sellersId, userId, rateNumber, description]
-		);
+      [sellersId, userId, rateNumber, description]
+    );
 
-		if (resDB.rowCount == 0)
-			throw new Error("Ocurrio un error, no se pudo insertar el rating");
+    if (resDB.rowCount == 0)
+      throw new Error("Ocurrio un error, no se pudo insertar el rating");
+
 
 		res.status(200).json({
 			ok: true,
@@ -501,4 +609,66 @@ export const changeUserStatus = async (req, res) => {
 			message: error.message
 		});
 	}
+
+    res.status(200).json({
+      ok: true,
+      isAdded: true,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      ok: false,
+      isAdded: false,
+      isError: true,
+      error: {
+        message: error.message,
+      },
+    });
+  }
+};
+
+export const addUserComplaint = async (req, res) => {
+  try {
+    const { userId, sellersId, description } = req.body;
+
+    const isAdded = await db.query(
+      `
+			SELECT * FROM complaints WHERE person_id= $1 AND reviewer_id =$2;
+		`,
+      [sellersId, userId]
+    );
+
+    if (isAdded.rowCount) {
+      return res.status(400).json({
+        ok: true,
+        isAdded: false,
+        isAlreadyExists: true,
+      });
+    }
+
+    const resDB = await db.query(
+      `INSERT INTO 
+				complaints (person_id, reviewer_id, description) 
+				VALUES ($1, $2, $3)`,
+      [sellersId, userId, description]
+    );
+
+    if (resDB.rowCount == 0) throw new Error("No se pudo insertar la queja");
+
+    res.status(200).json({
+      ok: true,
+      isAdded: true,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      ok: false,
+      isAdded: false,
+      isError: true,
+      error: {
+        message: error.message,
+      },
+    });
+  }
+
 };

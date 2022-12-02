@@ -8,13 +8,22 @@ import AuthContext from "./context/AuthContextProvider";
 import Layout from "./components/Layout";
 
 // Pages
+
 import CategoriesPage from "./pages/Admin/CategoriesPage";
+
+import CategoriesPage from "./pages/CategoriesPage";
+
 import ChatPage from "./pages/ChatPage";
+import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
+
 import ProductsPage from "./pages/Admin/ProductsPage";
+
+import ProductsPage from "./pages/ProductsPage";
+
 import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SigninPage from "./pages/SigninPage";
@@ -51,6 +60,21 @@ const App = () => {
           element={auth ? <ProfilePage /> : <Navigate to="/" />}
         />
         <Route
+
+
+          path="/dashboard"
+          element={auth ? <DashboardPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/categories"
+          element={auth ? <CategoriesPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/products"
+          element={auth ? <ProductsPage /> : <Navigate to="/" />}
+        />
+        <Route
+
           path="/chat"
           element={auth ? <ChatPage /> : <Navigate to="/" />}
         />

@@ -227,6 +227,7 @@ CREATE TABLE complaintCategories (
   
 );
 
+
 CREATE TABLE Complaints (  
  id SERIAL PRIMARY KEY,  
  person_id int not null,  
