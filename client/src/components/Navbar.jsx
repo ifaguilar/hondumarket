@@ -5,10 +5,10 @@ import CustomButton from "./CustomButton";
 // Icons
 import { IconContext } from "react-icons";
 import {
+  BsBarChartLineFill,
   BsBoxArrowInLeft,
   BsFillChatFill,
   BsFillHeartFill,
-  BsFillImageFill,
   BsFillPersonFill,
 } from "react-icons/bs";
 
@@ -137,6 +137,25 @@ const Navbar = () => {
                       <span>Perfil</span>
                     </li>
                   </Link>
+                  {auth &&
+                  JSON.parse(localStorage.getItem("user")).roleId === 1 ? (
+                    <Link to="/admin">
+                      <li
+                        className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
+                        onClick={() => setOpen(false)}
+                      >
+                        <IconContext.Provider
+                          value={{
+                            className: "text-gray-700",
+                            size: "16px",
+                          }}
+                        >
+                          <BsBarChartLineFill />
+                        </IconContext.Provider>
+                        <span>Admin Panel</span>
+                      </li>
+                    </Link>
+                  ) : null}
                   <Link to="/chat">
                     <li
                       className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
@@ -151,22 +170,6 @@ const Navbar = () => {
                         <BsFillChatFill />
                       </IconContext.Provider>
                       <span>Mensajes</span>
-                    </li>
-                  </Link>
-                  <Link to="/my-products">
-                    <li
-                      className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
-                      onClick={() => setOpen(false)}
-                    >
-                      <IconContext.Provider
-                        value={{
-                          className: "text-gray-700",
-                          size: "16px",
-                        }}
-                      >
-                        <BsFillImageFill />
-                      </IconContext.Provider>
-                      <span>Mis Productos</span>
                     </li>
                   </Link>
                   <li

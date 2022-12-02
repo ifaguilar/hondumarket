@@ -15,27 +15,35 @@ body {
 }
 
 .btn-secondary {
-  @apply bg-blue-100 text-blue-600;
+  @apply bg-blue-200/80 text-blue-600;
 }
 
 .btn-secondary:hover {
-  @apply bg-blue-100/80;
+  @apply bg-blue-200/60;
 }
 
 .btn-success {
-  @apply bg-green-500 text-white;
+  @apply bg-green-200/80 text-green-600;
 }
 
 .btn-success:hover {
-  @apply bg-green-500/90;
+  @apply bg-green-200/60;
 }
 
 .btn-danger {
-  @apply bg-red-500 text-white;
+  @apply bg-red-200/80 text-red-600;
 }
 
 .btn-danger:hover {
-  @apply bg-red-500/90;
+  @apply bg-red-200/60;
+}
+
+.btn-warning {
+  @apply bg-amber-200/80 text-amber-600;
+}
+
+.btn-warning:hover {
+  @apply bg-amber-200/60;
 }
 
 .btn-muted {

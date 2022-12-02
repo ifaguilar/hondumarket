@@ -92,6 +92,12 @@ export const signinUser = async (req, res) => {
         .json({ message: "La contraseña introducida es incorrecta." });
     }
 
+    if (!user.rows[0].is_active) {
+      return res
+        .status(401)
+        .json({ message: "Este usuario esta inactivo, contactate con soporte para la reactivacion del mismo." });
+    }
+
     const newToken = jwtGenerator(user.rows[0].id, "1h");
 
     res.status(200).json({

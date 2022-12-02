@@ -219,20 +219,36 @@ CREATE TABLE Chat_Message(
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
-
 -- Table Complaint
-CREATE TABLE Complaints (
-	id SERIAL PRIMARY KEY,
-	person_id int not null,
-	reviewer_id int not null,
-	description varchar (250),
-	created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-    modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-	is_active BOOLEAN DEFAULT TRUE NOT NULL,
-	foreign key (person_id) references person (id),
-	foreign key (reviewer_id) references person (id),
-	UNIQUE (person_id, reviewer_id)
+
+CREATE TABLE complaintCategories (  
+  cod_complaintCategories SERIAL primary key,  
+  nombre_category varchar (255)  
+  
 );
+
+CREATE TABLE Complaints (  
+ id SERIAL PRIMARY KEY,  
+ person_id int not null,  
+ reviewer_id int not null,  
+ description varchar (250),  
+ created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,  
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,  
+ is_active BOOLEAN DEFAULT TRUE NOT NULL,  
+  cod_complaintCategories INTEGER , 
+  
+ foreign key (person_id) references person (id),  
+ foreign key (reviewer_id) references person (id),  
+  FOREIGN key (cod_complaintCategories) references complaintCategories (cod_complaintCategories),  
+ UNIQUE (person_id, reviewer_id) 
+);
+
+
+-- ComplaintCategories
+INSERT INTO complaintCategories (nombre_category) VALUES ('Racismo'); 
+INSERT INTO complaintCategories (nombre_category) VALUES ('Acoso'); 
+INSERT INTO complaintCategories (nombre_category) VALUES ('Violencia verbal'); 
+INSERT INTO complaintCategories (nombre_category) VALUES ('Estafa');
 
 
 -- Roles

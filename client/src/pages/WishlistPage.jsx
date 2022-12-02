@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PuffLoader from "react-spinners/PuffLoader";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
@@ -10,6 +11,7 @@ import CustomButton from "../components/CustomButton";
 const WishlistPage = () => {
   const { auth } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(true);
   const [wishlistProducts, setWishlistProducts] = useState([]);
 
   const fetchWishlistProducts = async () => {
@@ -28,10 +30,14 @@ const WishlistPage = () => {
   };
 
   useEffect(() => {
-    if (auth) {
-      fetchWishlistProducts();
-    }
+    fetchWishlistProducts();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
+  });
 
   const removeFromWishlist = async (productId) => {
     try {
@@ -64,40 +70,50 @@ const WishlistPage = () => {
 
   return (
     <div className="container mx-auto mt-16 py-16 min-h-screen">
-      <div className="p-12 bg-white rounded-lg shadow">
-        <h2 className="text-3xl font-bold">Lista de deseos</h2>
-        <div className="flex flex-col gap-12 mt-12">
-          {wishlistProducts.map((product, index) => (
-            <div key={product.id} className="flex gap-4 items-center">
-              <p className="w-6">{index + 1}</p>
-              <img
-                className="w-16 h-16 object-contain"
-                src={product.photo}
-                alt={product.product_name}
-                loading="lazy"
-              />
-              <p className="w-96">{product.product_name}</p>
-              <p className="w-64">
-                L. {new Intl.NumberFormat().format(product.price)}
-              </p>
-              <div className="w-96">
-                <Link to={`/product/${product.id}`}>
-                  <CustomButton type="button" variant="primary">
-                    Ver producto
-                  </CustomButton>
-                </Link>
-              </div>
-              <CustomButton
-                type="button"
-                variant="danger"
-                onClick={() => removeFromWishlist(product.id)}
-              >
-                Eliminar de lista de deseos
-              </CustomButton>
-            </div>
-          ))}
+      {loading ? (
+        <div className="flex align-center justify-center">
+          <PuffLoader color={"#3B82F6"} />
         </div>
-      </div>
+      ) : (
+        <div className="p-12 bg-white rounded-lg shadow">
+          <h2 className="text-3xl font-bold">Lista de deseos</h2>
+          <div className="flex flex-col gap-12 mt-12">
+            {auth && wishlistProducts.length !== 0 ? (
+              wishlistProducts.map((product, index) => (
+                <div key={product.id} className="flex gap-4 items-center">
+                  <p className="w-6">{index + 1}</p>
+                  <img
+                    className="w-16 h-16 object-contain"
+                    src={product.photo}
+                    alt={product.product_name}
+                    loading="lazy"
+                  />
+                  <p className="w-96">{product.product_name}</p>
+                  <p className="w-64">
+                    L. {new Intl.NumberFormat().format(product.price)}
+                  </p>
+                  <div className="w-96">
+                    <Link to={`/product/${product.id}`}>
+                      <CustomButton type="button" variant="primary">
+                        Ver producto
+                      </CustomButton>
+                    </Link>
+                  </div>
+                  <CustomButton
+                    type="button"
+                    variant="danger"
+                    onClick={() => removeFromWishlist(product.id)}
+                  >
+                    Eliminar de lista de deseos
+                  </CustomButton>
+                </div>
+              ))
+            ) : (
+              <p>No tienes productos en tu lista de deseos.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

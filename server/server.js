@@ -18,6 +18,7 @@ import departmentRoutes from "./src/routes/departmentRoutes.js";
 import productRoutes from "./src/routes/productRoutes.js";
 import subscriptionRoutes from "./src/routes/subscriptionRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import complaintRoutes from "./src/routes/complaintsRoutes.js";
 
 // Initializing .env
 dotenv.config();
@@ -37,6 +38,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
+app.use("/api/complaints", complaintRoutes);
+
 
 // Listening for requests
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
