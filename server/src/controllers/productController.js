@@ -102,6 +102,10 @@ export const getProduct = async (req, res) => {
       [req.params.id]
     );
 
+    await db.query("UPDATE Product SET views = views + 1 WHERE id = $1", [
+      req.params.id,
+    ]);
+
     res.status(200).json(product.rows[0]);
   } catch (error) {
     console.error(error.message);
@@ -157,7 +161,7 @@ export const updateProduct = async (req, res) => {
     const newExpirationDate = `${date} ${time}`;
 
     await db.query(
-      "UPDATE Product SET expiration_date = TO_TIMESTAMP($1, 'YYYY-MM-DD HH24:MI:SS'), is_active = $2 WHERE id = $3",
+      "UPDATE Product SET expiration_date = TO_TIMESTAMP($1, 'YYYY-MM-DD HH24:MI:SS'), modified_at = NOW(), is_active = $2 WHERE id = $3",
       [newExpirationDate, isActive, productId]
     );
 
@@ -174,6 +178,19 @@ export const deactivateProduct = async (req, res) => {
 
     await db.query("UPDATE Product SET is_active = FALSE WHERE id = $1", [
       productId,
+    ]);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const addView = async (req, res) => {
+  try {
+    await db.query("UPDATE Product SET views = views + 1 WHERE id = $1", [
+      req.params.id,
     ]);
 
     res.status(200).json({ success: true });

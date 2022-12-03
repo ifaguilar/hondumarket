@@ -2,6 +2,7 @@ import { Router } from "express";
 
 // Controllers
 import {
+  addView,
   deactivateProduct,
   getPhotos,
   getProduct,
@@ -18,7 +19,8 @@ router.get("/", getProducts);
 router.get("/dashboard", getProductsDashboard);
 router.patch("/deactivate/:id", deactivateProduct);
 router.get("/:id", getProduct);
-router.patch("/:id", updateProduct);
+router.patch("/:id", addView);
+router.patch("/:id/update", updateProduct);
 router.get("/:id/seller", getSeller);
 router.get("/:id/photos", getPhotos);
 

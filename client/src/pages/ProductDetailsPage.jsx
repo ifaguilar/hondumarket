@@ -26,15 +26,30 @@ const ProductDetailsPage = () => {
   const [mainPhoto, setMainPhoto] = useState("");
   const [activePhoto, setActivePhoto] = useState(0);
   const [isProductInWishlist, setIsProductInWishlist] = useState(false);
-
   const [openRatingModal, setOpenRatingModal] = useState(false);
   const [openComplaintgModal, setOpenComplaintgModal] = useState(false);
+
+  const addView = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/products/${id}/`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await response.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const fetchProduct = async () => {
     const response = await fetch(`http://localhost:3000/api/products/${id}`);
     const data = await response.json();
 
     setProduct(data);
+    addView();
   };
 
   const fetchPhotos = async () => {
@@ -65,7 +80,6 @@ const ProductDetailsPage = () => {
     setSeller(dataWithRate);
   };
 
-  //Rating info:
   const fetchSellerRate = async (sellerID) => {
     if (!sellerID) return {};
 

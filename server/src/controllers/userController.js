@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import db from "../database/db.js";
 import cloudinary from "../utils/cloudinaryGenerator.js";
 
@@ -7,11 +7,10 @@ import cloudinary from "../utils/cloudinaryGenerator.js";
 dotenv.config();
 
 export const getUsers = async (req, res) => {
-	try {
+  try {
+    const { state } = req.query;
 
-		const { state } = req.query;
-
-		const queryStr = `
+    const queryStr = `
 			SELECT 
 				id, 
 				first_name, 
@@ -21,104 +20,15 @@ export const getUsers = async (req, res) => {
 				modified_at,
 				is_active
 			FROM Person
-				${state == "onlyActive"
-				? "WHERE is_active = TRUE"
-				: ""}
+				${state == "onlyActive" ? "WHERE is_active = TRUE" : ""}
 			ORDER BY id ASC
-		`
+		`;
 
-		const users = await db.query(queryStr);
-
-		res.status(200).json({
-			success: true,
-			users: users.rows,
-		});
-
-	} catch (error) {
-		console.error(error.message);
-		res.status(500).json({ message: error.message });
-	}
-};
-
-export const updateUser = async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      password,
-      municipalityId,
-      avatar,
-    } = req.body;
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    let updatedUser = "";
-
-    if (avatar) {
-      const response = await cloudinary.uploader.upload(
-        `D:\\Downloads\\${avatar}`,
-        {
-          upload_preset: "dev_setup",
-        }
-      );
-
-      const avatarURL = response.secure_url.replace(".webp", ".png");
-
-      updatedUser = await db.query(
-        `UPDATE Person
-        SET
-          first_name = $1,
-          last_name = $2,
-          phone = $3,
-          email = $4,
-          psswrd = $5,
-          avatar = $6,
-          modified_at = NOW()
-        WHERE id = $7
-        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
-        [
-          firstName,
-          lastName,
-          phone,
-          email,
-          hashedPassword,
-          avatarURL,
-          req.params.id,
-        ]
-      );
-    } else {
-      updatedUser = await db.query(
-        `UPDATE Person
-        SET
-          first_name = $1,
-          last_name = $2,
-          phone = $3,
-          email = $4,
-          psswrd = $5,
-          modified_at = NOW()
-        WHERE id = $6
-        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
-        [firstName, lastName, phone, email, hashedPassword, req.params.id]
-      );
-    }
-
-    const updatedUserAddress = await db.query(
-      `
-      UPDATE Person_Address
-      SET municipality_id = $1
-      WHERE person_id = $2
-      RETURNING *
-    `,
-      [municipalityId, req.params.id]
-    );
+    const users = await db.query(queryStr);
 
     res.status(200).json({
       success: true,
-      updatedUser: updatedUser.rows[0],
-      updatedUserAddress: updatedUserAddress.rows[0],
+      users: users.rows,
     });
   } catch (error) {
     console.error(error.message);
@@ -388,64 +298,49 @@ export const getAverageUserRating = async (req, res) => {
   }
 };
 
-
 export const updateRating = async (req, res) => {
-	try {
+  try {
+    const { userId, sellersId, description, rateNumber } = req.body;
 
-		const { userId, sellersId, description, rateNumber } = req.body;
-
-		const resDB = await db.query(`
+    const resDB = await db.query(
+      `
         UPDATE person_rating 
           SET description = $1, 
           rating_id = $2
           WHERE person_id = $3 and reviewer_id = $4
-      	`, [description, rateNumber, sellersId, userId]
-		);
+      	`,
+      [description, rateNumber, sellersId, userId]
+    );
 
-		if (resDB.rowCount == 0)
-			throw new Error("No se pudo actualizar la queja");
+    if (resDB.rowCount == 0) throw new Error("No se pudo actualizar la queja");
 
-		return res.status(200).json({
-			ok: true,
-			isAdded: false,
-			isUpdated: true,
-		});
-
-	} catch (error) {
-
-		console.error(error.message);
-		return res.status(500).json({
-			ok: false,
-			isAdded: false,
-			isUpdated: false,
-			isError: true,
-			error: {
-				message: error.message,
-			},
-		});
-	}
-}
+    return res.status(200).json({
+      ok: true,
+      isAdded: false,
+      isUpdated: true,
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({
+      ok: false,
+      isAdded: false,
+      isUpdated: false,
+      isError: true,
+      error: {
+        message: error.message,
+      },
+    });
+  }
+};
 
 export const addUserRating = async (req, res, next) => {
-
-	try {
-
-		const { userId, sellersId, description, rateNumber } = req.body;
-
-    if (!description || !rateNumber) 
-      throw new Error("Es necesario ingresar una calificacion y una descripcion")
-
-		const isAdded = await db.query(`
-			SELECT * FROM person_rating WHERE person_id= $1 AND reviewer_id =$2;
-		`, [sellersId, userId]);
-
-		if (isAdded.rowCount) {
-			return next();
-		}
-
-export const addUserRating = async (req, res) => {
   try {
     const { userId, sellersId, description, rateNumber } = req.body;
+
+    if (!description || !rateNumber)
+      throw new Error(
+        "Es necesario ingresar una calificacion y una descripcion"
+      );
 
     const isAdded = await db.query(
       `
@@ -454,13 +349,8 @@ export const addUserRating = async (req, res) => {
       [sellersId, userId]
     );
 
-
     if (isAdded.rowCount) {
-      return res.status(400).json({
-        ok: true,
-        isAdded: false,
-        isAlreadyExists: true,
-      });
+      return next();
     }
 
     const resDB = await db.query(
@@ -473,152 +363,52 @@ export const addUserRating = async (req, res) => {
     if (resDB.rowCount == 0)
       throw new Error("Ocurrio un error, no se pudo insertar el rating");
 
-
-		res.status(200).json({
-			ok: true,
-			isAdded: true,
-			isUpdated: false,
-		});
-
-	} catch (error) {
-
-		console.error(error.message);
-		res.status(500).json({
-			ok: false,
-			isAdded: false,
-			isError: true,
-			isUpdated: false,
-			error: {
-				message: error.message,
-			},
-		});
-	}
-};
-
-export const updateComplaint = async (req, res) => {
-	try {
-
-		const { userId, sellersId, description, complaintCategoryID } = req.body;
-
-		const resDB = await db.query(`
-        UPDATE complaints 
-          SET description = $1, 
-          cod_complaintCategories = $2 
-          WHERE person_id = $3 and reviewer_id = $4
-      `, [description, complaintCategoryID, sellersId, userId]
-		);
-
-		if (resDB.rowCount == 0)
-			throw new Error("No se pudo actualizar la queja");
-
-		return res.status(200).json({
-			ok: true,
-			isAdded: false,
-			isUpdated: true,
-		});
-
-	} catch (error) {
-
-		console.error(error.message);
-		return res.status(500).json({
-			ok: false,
-			isAdded: false,
-			isUpdated: false,
-			isError: true,
-			error: {
-				message: error.message,
-			},
-		});
-	}
-}
-
-export const addUserComplaint = async (req, res, next) => {
-
-	try {
-
-		const { userId, sellersId, description, complaintCategoryID } = req.body;
-
-    if (!description || !complaintCategoryID) 
-      throw new Error("Es necesario ingresar una categoria y una descripcion")
-
-		const isAdded = await db.query(`
-			SELECT * FROM complaints WHERE person_id= $1 AND reviewer_id =$2;
-		`, [sellersId, userId]);
-
-		if (isAdded.rowCount) {
-			next();
-			return;
-		}
-
-		const resDB = await db.query(
-			`INSERT INTO 
-				complaints (person_id, reviewer_id, description, cod_complaintCategories) 
-				VALUES ($1, $2, $3, $4)`,
-			[sellersId, userId, description, complaintCategoryID]
-		);
-
-		if (resDB.rowCount == 0)
-			throw new Error("No se pudo insertar la queja");
-
-		return res.status(200).json({
-			ok: true,
-			isAdded: true,
-			isUpdated: false,
-		});
-
-	} catch (error) {
-
-		console.error(error.message);
-		return res.status(500).json({
-			ok: false,
-			isAdded: false,
-			isUpdated: false,
-			isError: true,
-			error: {
-				message: error.message,
-			},
-		});
-	}
-};
-
-export const changeUserStatus = async (req, res) => {
-
-	try {
-
-		const { isActive, userID } = req.body;
-
-		const resDB = await db.query(`
-        UPDATE person 
-          SET is_active = $1
-          WHERE id = $2
-      `, [isActive, userID]
-		);
-
-		if (resDB.rowCount < 1)
-			throw new Error("Algo salio mal y no se pudo actualizar el estado del usuario");
-
-		res.status(200).json({
-			ok: true,
-			isChanged: true,
-		});
-
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({
-			ok: false,
-			message: error.message
-		});
-	}
-
     res.status(200).json({
       ok: true,
       isAdded: true,
+      isUpdated: false,
     });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
       ok: false,
       isAdded: false,
+      isError: true,
+      isUpdated: false,
+      error: {
+        message: error.message,
+      },
+    });
+  }
+};
+
+export const updateComplaint = async (req, res) => {
+  try {
+    const { userId, sellersId, description, complaintCategoryID } = req.body;
+
+    const resDB = await db.query(
+      `
+        UPDATE complaints 
+          SET description = $1, 
+          cod_complaintCategories = $2 
+          WHERE person_id = $3 and reviewer_id = $4
+      `,
+      [description, complaintCategoryID, sellersId, userId]
+    );
+
+    if (resDB.rowCount == 0) throw new Error("No se pudo actualizar la queja");
+
+    return res.status(200).json({
+      ok: true,
+      isAdded: false,
+      isUpdated: true,
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({
+      ok: false,
+      isAdded: false,
+      isUpdated: false,
       isError: true,
       error: {
         message: error.message,
@@ -627,9 +417,12 @@ export const changeUserStatus = async (req, res) => {
   }
 };
 
-export const addUserComplaint = async (req, res) => {
+export const addUserComplaint = async (req, res, next) => {
   try {
-    const { userId, sellersId, description } = req.body;
+    const { userId, sellersId, description, complaintCategoryID } = req.body;
+
+    if (!description || !complaintCategoryID)
+      throw new Error("Es necesario ingresar una categoria y una descripción");
 
     const isAdded = await db.query(
       `
@@ -639,36 +432,65 @@ export const addUserComplaint = async (req, res) => {
     );
 
     if (isAdded.rowCount) {
-      return res.status(400).json({
-        ok: true,
-        isAdded: false,
-        isAlreadyExists: true,
-      });
+      next();
+      return;
     }
 
     const resDB = await db.query(
       `INSERT INTO 
-				complaints (person_id, reviewer_id, description) 
-				VALUES ($1, $2, $3)`,
-      [sellersId, userId, description]
+				complaints (person_id, reviewer_id, description, cod_complaintCategories) 
+				VALUES ($1, $2, $3, $4)`,
+      [sellersId, userId, description, complaintCategoryID]
     );
 
     if (resDB.rowCount == 0) throw new Error("No se pudo insertar la queja");
 
-    res.status(200).json({
+    return res.status(200).json({
       ok: true,
       isAdded: true,
+      isUpdated: false,
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       isAdded: false,
+      isUpdated: false,
       isError: true,
       error: {
         message: error.message,
       },
     });
   }
+};
 
+export const changeUserStatus = async (req, res) => {
+  try {
+    const { isActive, userID } = req.body;
+
+    const resDB = await db.query(
+      `
+        UPDATE person 
+          SET is_active = $1
+          WHERE id = $2
+      `,
+      [isActive, userID]
+    );
+
+    if (resDB.rowCount < 1)
+      throw new Error(
+        "Algo salio mal y no se pudo actualizar el estado del usuario"
+      );
+
+    res.status(200).json({
+      ok: true,
+      isChanged: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
 };

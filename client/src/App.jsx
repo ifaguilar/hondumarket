@@ -8,33 +8,22 @@ import AuthContext from "./context/AuthContextProvider";
 import Layout from "./components/Layout";
 
 // Pages
-
+import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
+import AdminUserPage from "./pages/Admin/AdminUserPage";
 import CategoriesPage from "./pages/Admin/CategoriesPage";
-
-import CategoriesPage from "./pages/CategoriesPage";
-
+import DashboardPage from "./pages/Admin/DashboardPage";
+import ProductsPage from "./pages/Admin/ProductsPage";
 import ChatPage from "./pages/ChatPage";
-import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
-
-import ProductsPage from "./pages/Admin/ProductsPage";
-
-import ProductsPage from "./pages/ProductsPage";
-
 import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TermsPage from "./pages/TermsPage";
 import WishlistPage from "./pages/WishlistPage";
-import { isUserAdmin } from "./utils/user";
-import LayoutAdmin from "./components/LayoutAdmin";
-import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
-import AdminUserPage from "./pages/Admin/AdminUserPage";
-import DashboardPage from "./pages/Admin/DashboardPage";
 
 const App = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -60,8 +49,6 @@ const App = () => {
           element={auth ? <ProfilePage /> : <Navigate to="/" />}
         />
         <Route
-
-
           path="/dashboard"
           element={auth ? <DashboardPage /> : <Navigate to="/" />}
         />
@@ -74,7 +61,14 @@ const App = () => {
           element={auth ? <ProductsPage /> : <Navigate to="/" />}
         />
         <Route
-
+          path="/dashboard/complaints"
+          element={auth ? <AdminComplaintsPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/users"
+          element={auth ? <AdminUserPage /> : <Navigate to="/" />}
+        />
+        <Route
           path="/chat"
           element={auth ? <ChatPage /> : <Navigate to="/" />}
         />
@@ -107,16 +101,6 @@ const App = () => {
           )
         }
       />
-
-		{isUserAdmin() &&
-			<Route exact path="/admin" element={<LayoutAdmin/>}>
-				<Route path="" element={<DashboardPage />} />
-				<Route path="categories" element={<CategoriesPage />} />
-				<Route path="products" element={<ProductsPage />} />
-				<Route path="complaints" element={<AdminComplaintsPage />} />
-				<Route path="users" element={<AdminUserPage/>} />
-			</Route>
-		}
     </Routes>
   );
 };

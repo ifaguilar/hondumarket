@@ -65,7 +65,7 @@ CREATE TABLE Person_Rating(
     person_id INT NOT NULL,
     reviewer_id INT NOT NULL,
     rating_id INT NOT NULL,
-    description varchar (250),
+    description VARCHAR(255),
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     PRIMARY KEY(person_id, reviewer_id),
@@ -111,6 +111,7 @@ CREATE TABLE Product(
     modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     expiration_date TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() + INTERVAL '30 DAYS' NOT NULL,
+    views INT NOT NULL DEFAULT 0,
     person_id INT NOT NULL,
     category_id INT NOT NULL,
     condition_id INT NOT NULL,
@@ -219,38 +220,41 @@ CREATE TABLE Chat_Message(
       ON UPDATE CASCADE
       ON DELETE CASCADE
 );
--- Table Complaint
 
-CREATE TABLE complaintCategories (  
-  cod_complaintCategories SERIAL primary key,  
-  nombre_category varchar (255)  
-  
+CREATE TABLE complaintCategories(
+  cod_complaintCategories SERIAL PRIMARY KEY,
+  nombre_category VARCHAR(255)
 );
 
-
-CREATE TABLE Complaints (  
- id SERIAL PRIMARY KEY,  
- person_id int not null,  
- reviewer_id int not null,  
- description varchar (250),  
- created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,  
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,  
- is_active BOOLEAN DEFAULT TRUE NOT NULL,  
-  cod_complaintCategories INTEGER , 
-  
- foreign key (person_id) references person (id),  
- foreign key (reviewer_id) references person (id),  
-  FOREIGN key (cod_complaintCategories) references complaintCategories (cod_complaintCategories),  
- UNIQUE (person_id, reviewer_id) 
+CREATE TABLE Complaints(
+  id SERIAL PRIMARY KEY,
+  person_id INT NOT NULL,
+  reviewer_id INT NOT NULL,
+  description VARCHAR(255),
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,  
+  cod_complaintCategories INT,
+  FOREIGN KEY (person_id)
+    REFERENCES person(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY (reviewer_id)
+    REFERENCES person(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY (cod_complaintCategories)
+    REFERENCES complaintCategories(cod_complaintCategories)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  UNIQUE(person_id, reviewer_id)
 );
 
-
--- ComplaintCategories
-INSERT INTO complaintCategories (nombre_category) VALUES ('Racismo'); 
-INSERT INTO complaintCategories (nombre_category) VALUES ('Acoso'); 
-INSERT INTO complaintCategories (nombre_category) VALUES ('Violencia verbal'); 
+-- Complaint Categories
+INSERT INTO complaintCategories (nombre_category) VALUES ('Racismo');
+INSERT INTO complaintCategories (nombre_category) VALUES ('Acoso');
+INSERT INTO complaintCategories (nombre_category) VALUES ('Violencia verbal');
 INSERT INTO complaintCategories (nombre_category) VALUES ('Estafa');
-
 
 -- Roles
 INSERT INTO Person_Role (role_name) VALUES ('admin');

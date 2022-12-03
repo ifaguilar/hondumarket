@@ -45,7 +45,7 @@ const ProductsPage = () => {
 
   const updateProduct = async (body) => {
     const response = await fetch(
-      `http://localhost:3000/api/products/${activeProduct.id}`,
+      `http://localhost:3000/api/products/${activeProduct.id}/update`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

@@ -139,10 +139,7 @@ const Navbar = () => {
                   </Link>
                   {auth &&
                   JSON.parse(localStorage.getItem("user")).roleId === 1 ? (
-                    <Link to="/admin">
-
                     <Link to="/dashboard">
-
                       <li
                         className="flex gap-4 items-center px-6 py-4 cursor-pointer transition hover:bg-gray-100"
                         onClick={() => setOpen(false)}
@@ -155,11 +152,7 @@ const Navbar = () => {
                         >
                           <BsBarChartLineFill />
                         </IconContext.Provider>
-
-                        <span>Admin Panel</span>
-
                         <span>Dashboard</span>
-
                       </li>
                     </Link>
                   ) : null}
