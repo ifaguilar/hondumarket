@@ -6,7 +6,7 @@ import ModalStatus from "../../components/ModalStatus";
 import Pagination from "../../components/Pagination";
 import SwitchOnOff from "../../components/SwitchOnOff";
 
-const AdminUserPage = () => {
+const UsersPage = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -63,7 +63,6 @@ const AdminUserPage = () => {
     }, 800);
   });
 
-  console.log(users);
   const getPageContent = () => {
     if (loading) {
       return (
@@ -75,6 +74,9 @@ const AdminUserPage = () => {
       return (
         <div className="p-12 bg-white rounded-lg shadow">
           <h2 className="text-3xl font-bold">Usuarios</h2>
+          <p className="mt-4">
+            Administración de todas los usuarios de la plataforma.
+          </p>
           <div className="flex flex-col gap-12 mt-12">
             {users.length !== 0 ? (
               <div className="flex gap-4 items-center">
@@ -194,4 +196,4 @@ const AdminUserPage = () => {
   );
 };
 
-export default AdminUserPage;
+export default UsersPage;

@@ -204,6 +204,9 @@ const ProductsPage = () => {
         ) : (
           <div className="p-12 bg-white rounded-lg shadow">
             <h2 className="text-3xl font-bold">Productos</h2>
+            <p className="mt-4">
+              Administración de todos los productos de la plataforma.
+            </p>
             <div className="flex flex-col gap-12 mt-12">
               {products.length !== 0 ? (
                 <div className="flex gap-4 items-center">

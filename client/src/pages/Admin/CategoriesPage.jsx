@@ -183,6 +183,9 @@ const CategoriesPage = () => {
         ) : (
           <div className="p-12 bg-white rounded-lg shadow">
             <h2 className="text-3xl font-bold">Categorías</h2>
+            <p className="mt-4">
+              Administración de todas las categorías de la plataforma.
+            </p>
             <div className="flex flex-col gap-12 mt-12">
               {categories.length !== 0 ? (
                 <div className="flex gap-4 items-center">

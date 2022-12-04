@@ -34,7 +34,7 @@ export const getProducts = async (req, res) => {
         WHERE Photo.product_id = Product.id
       ) AND Product.is_active = TRUE
       AND Category.is_active = TRUE
-      ORDER BY Product.created_at, Product.id DESC`
+      ORDER BY Product.created_at DESC, Product.id DESC`
     );
 
     res.status(200).json(products.rows);

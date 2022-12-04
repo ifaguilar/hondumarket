@@ -645,14 +645,16 @@ INSERT INTO Person (
   phone,
   email,
   psswrd,
-  avatar
+  avatar,
+  created_at
 ) VALUES (
   'Any',
   'Lorenzana',
   '1111-1111',
   'any@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
-  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-08-01 00:00:00'
 );
 
 INSERT INTO Person (
@@ -661,14 +663,16 @@ INSERT INTO Person (
   phone,
   email,
   psswrd,
-  avatar
+  avatar,
+  created_at
 ) VALUES (
   'Isaac',
   'Aguilar',
   '2222-2222',
   'ifaguilarnunez@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
-  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-08-01 00:00:00'
 );
 
 INSERT INTO Person (
@@ -677,14 +681,16 @@ INSERT INTO Person (
   phone,
   email,
   psswrd,
-  avatar
+  avatar,
+  created_at
 ) VALUES (
   'Jazmín',
   'Maradiaga',
   '3333-3333',
   'jazmin@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
-  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-09-01 00:00:00'
 );
 
 INSERT INTO Person (
@@ -693,14 +699,16 @@ INSERT INTO Person (
   phone,
   email,
   psswrd,
-  avatar
+  avatar,
+  created_at
 ) VALUES (
   'Josué',
   'Zelaya',
   '4444-4444',
   'josue@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
-  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-10-01 00:00:00'
 );
 
 INSERT INTO Person (
@@ -709,14 +717,16 @@ INSERT INTO Person (
   phone,
   email,
   psswrd,
-  avatar
+  avatar,
+  created_at
 ) VALUES (
   'Jovanny',
   'Rubio',
   '5555-5555',
   'jovanny@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
-  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png'
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-11-01 00:00:00'
 );
 
 -- Persons Address
@@ -990,9 +1000,71 @@ INSERT INTO Product (
   1
 );
 
+INSERT INTO Product (
+  product_name,
+  product_description,
+  price,
+  person_id,
+  category_id,
+  condition_id
+) VALUES (
+  'Halo Infinite',
+  'Videojuego acción-aventura para Xbox Series X/S',
+  699.99,
+  4,
+  4,
+  2
+);
+
+INSERT INTO Product (
+  product_name,
+  product_description,
+  price,
+  person_id,
+  category_id,
+  condition_id
+) VALUES (
+  'Spider-Man: Miles Morales',
+  'Videojuego acción-aventura para PlayStation 5',
+  999.99,
+  4,
+  4,
+  3
+);
+
 -- Salud y Belleza
 
+INSERT INTO Product (
+  product_name,
+  product_description,
+  price,
+  person_id,
+  category_id,
+  condition_id
+) VALUES (
+  'CeraVe PM Facial Moisturizing Lotion',
+  'Crema humectante ligera de uso nocturno formulada con tres ceramidas esenciales que ayudan a fortalecer la barrera natural de la piel, ácido hialurónico hidratante y niacinamida que ayuda a calmar la piel.',
+  750.00,
+  5,
+  5,
+  1
+);
 
+INSERT INTO Product (
+  product_name,
+  product_description,
+  price,
+  person_id,
+  category_id,
+  condition_id
+) VALUES (
+  'CeraVe Foaming Facial Cleanser',
+  'El gel limpiador elimina el exceso de sebo restaurando la barrera protectora de la piel. Limpia profundamente y refresca, mientras remueve el exceso de grasa y maquillaje.',
+  620.00,
+  5,
+  5,
+  1
+);
 
 -- Moda para Mujer
 
@@ -1021,7 +1093,7 @@ INSERT INTO Product (
 
 
 
--- Photos (Product 1)
+-- Licuadora Ninja Professional Plus
 
 INSERT INTO Photo (
   photo,
@@ -1071,7 +1143,7 @@ INSERT INTO Photo (
   1
 );
 
--- Photos (Product 2)
+-- Refrigeradora LG con dispensador de hielo
 
 INSERT INTO Photo (
   photo,
@@ -1121,7 +1193,7 @@ INSERT INTO Photo (
   2
 );
 
--- Photos (Product 3)
+-- Estufa eléctrica Frigidaire
 
 INSERT INTO Photo (
   photo,
@@ -1171,7 +1243,7 @@ INSERT INTO Photo (
   3
 );
 
--- Photos (Product 4)
+-- Lavadora Whirlpool de carga superior
 
 INSERT INTO Photo (
   photo,
@@ -1221,7 +1293,7 @@ INSERT INTO Photo (
   4
 );
 
--- Photos (Product 5)
+-- Microsoft Surface Laptop 5 15"
 
 INSERT INTO Photo (
   photo,
@@ -1271,7 +1343,7 @@ INSERT INTO Photo (
   5
 );
 
--- Photos (Product 6)
+-- Apple MacBook Pro 14"
 
 INSERT INTO Photo (
   photo,
@@ -1321,7 +1393,7 @@ INSERT INTO Photo (
   6
 );
 
--- Photos (Product 7)
+-- Dell XPS 15"
 
 INSERT INTO Photo (
   photo,
@@ -1371,7 +1443,7 @@ INSERT INTO Photo (
   7
 );
 
--- Photos (Product 8)
+-- HP ENVY 17"
 
 INSERT INTO Photo (
   photo,
@@ -1421,7 +1493,7 @@ INSERT INTO Photo (
   8
 );
 
--- Photos (Product 9)
+-- Apple iPhone 14 Pro Max
 
 INSERT INTO Photo (
   photo,
@@ -1471,7 +1543,7 @@ INSERT INTO Photo (
   9
 );
 
--- Photos (Product 10)
+-- Samsung Galaxy S22 Ultra
 
 INSERT INTO Photo (
   photo,
@@ -1521,7 +1593,7 @@ INSERT INTO Photo (
   10
 );
 
--- Photos (Product 11)
+-- Huawei Mate 50 Pro
 
 INSERT INTO Photo (
   photo,
@@ -1571,7 +1643,7 @@ INSERT INTO Photo (
   11
 );
 
--- Photos (Product 12)
+-- Xiaomi 12T Pro
 
 INSERT INTO Photo (
   photo,
@@ -1621,7 +1693,7 @@ INSERT INTO Photo (
   12
 );
 
--- Photos (Product 13)
+-- Call of Duty: Modern Warfare 2
 
 INSERT INTO Photo (
   photo,
@@ -1671,7 +1743,7 @@ INSERT INTO Photo (
   13
 );
 
--- Photos (Product 14)
+-- A Plague Tale: Requiem
 
 INSERT INTO Photo (
   photo,
@@ -1721,7 +1793,7 @@ INSERT INTO Photo (
   14
 );
 
--- Photos (Product 15)
+-- Bayonetta 3
 
 INSERT INTO Photo (
   photo,
@@ -1771,7 +1843,7 @@ INSERT INTO Photo (
   15
 );
 
--- Photos (Product 16)
+-- Mario + Rabbids Sparks of Hope
 
 INSERT INTO Photo (
   photo,
@@ -1819,4 +1891,204 @@ INSERT INTO Photo (
 ) VALUES (
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1668281213/HonduMarket/xtd2tnodqs5qvfrxecas.jpg',
   16
+);
+
+-- Halo Infinite
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131251/HonduMarket/sq6gpihvpgd4osou235q.jpg',
+  17
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131249/HonduMarket/r4cfzk3fctvh07mtpjxw.jpg',
+  17
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131249/HonduMarket/ikicmzqogcpyowul21tf.jpg',
+  17
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131251/HonduMarket/jwttfezq2z3ypoan4s37.jpg',
+  17
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131251/HonduMarket/jxhbsfiy8lmaip8tkttu.jpg',
+  17
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131250/HonduMarket/jzrnq8oa9q1cjqo3dcha.jpg',
+  17
+);
+
+-- Spider-Man: Miles Morales
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/pvevaa4jculmnjfoxsmh.jpg',
+  18
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/vxuoumupnu20lqminwkq.jpg',
+  18
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/gfimbzyrmbebcxjowcmr.jpg',
+  18
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/kfhh7gro1btpdheicdix.jpg',
+  18
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/cghmlmi5jlmeys8lh2vk.jpg',
+  18
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670131744/HonduMarket/vkjuwyblzdpklq9kxcx9.jpg',
+  18
+);
+
+-- CeraVe PM Facial Moisturizing Lotion
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/ioyummhom26m8ypdbp1h.jpg',
+  19
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/u7gzau8rltpca1mjzbio.jpg',
+  19
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/yby63qosgxauhrb23wwm.jpg',
+  19
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/v6pxgnyzfgzwiphaocy7.jpg',
+  19
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/szbrrzendprplc74cydl.jpg',
+  19
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129130/HonduMarket/b0t6g5eoe1trxlh35kxx.jpg',
+  19
+);
+
+-- Cerave Foaming Facial Cleanser
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/f97v3or5ukwfdbjq1as8.jpg',
+  20
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/gmufqbrjjebcigexkvih.jpg',
+  20
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/dezt0btrvdzbp94wucsh.jpg',
+  20
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/kqhipwjej0uydd1fisoo.jpg',
+  20
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/uvmapghaeosqiptt6upy.jpg',
+  20
+);
+
+INSERT INTO Photo (
+  photo,
+  product_id
+) VALUES (
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1670129714/HonduMarket/ckovb4jhpguaoxovm6i6.jpg',
+  20
 );

@@ -6,7 +6,7 @@ import ModalStatus from "../../components/ModalStatus";
 import Pagination from "../../components/Pagination";
 import SwitchOnOff from "../../components/SwitchOnOff";
 
-const AdminComplaintsPage = () => {
+const ComplaintsPage = () => {
   const [loading, setLoading] = useState(true);
   const [complaints, setComplaints] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -89,18 +89,25 @@ const AdminComplaintsPage = () => {
       return (
         <div className="p-12 bg-white rounded-lg shadow">
           <div className="flex justify-between">
-            <h2 className="text-3xl font-bold">Denuncias</h2>
-            <select
-              className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              onChange={(evt) => fetchComplaints(evt.target.value)}
-            >
-              <option value="all">Todas</option>
-              {complaintCategories.map((category) => (
-                <option key={category.cod_complaintcategories}>
-                  {category.nombre_category}
-                </option>
-              ))}
-            </select>
+            <div>
+              <h2 className="text-3xl font-bold">Denuncias</h2>
+              <p className="mt-4">
+                Administración de todas las denuncias de la plataforma.
+              </p>
+            </div>
+            <div>
+              <select
+                className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(evt) => fetchComplaints(evt.target.value)}
+              >
+                <option value="all">Todas</option>
+                {complaintCategories.map((category) => (
+                  <option key={category.cod_complaintcategories}>
+                    {category.nombre_category}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="flex flex-col gap-12 mt-12">
             {complaints.length !== 0 ? (
@@ -241,4 +248,4 @@ const AdminComplaintsPage = () => {
   );
 };
 
-export default AdminComplaintsPage;
+export default ComplaintsPage;

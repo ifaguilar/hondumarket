@@ -8,11 +8,11 @@ import AuthContext from "./context/AuthContextProvider";
 import Layout from "./components/Layout";
 
 // Pages
-import AdminComplaintsPage from "./pages/Admin/AdminComplaintsPage";
-import AdminUserPage from "./pages/Admin/AdminUserPage";
 import CategoriesPage from "./pages/Admin/CategoriesPage";
+import ComplaintsPage from "./pages/Admin/ComplaintsPage";
 import DashboardPage from "./pages/Admin/DashboardPage";
 import ProductsPage from "./pages/Admin/ProductsPage";
+import UsersPage from "./pages/Admin/UsersPage";
 import ChatPage from "./pages/ChatPage";
 import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -62,11 +62,11 @@ const App = () => {
         />
         <Route
           path="/dashboard/complaints"
-          element={auth ? <AdminComplaintsPage /> : <Navigate to="/" />}
+          element={auth ? <ComplaintsPage /> : <Navigate to="/" />}
         />
         <Route
           path="/dashboard/users"
-          element={auth ? <AdminUserPage /> : <Navigate to="/" />}
+          element={auth ? <UsersPage /> : <Navigate to="/" />}
         />
         <Route
           path="/chat"

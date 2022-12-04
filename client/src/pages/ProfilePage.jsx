@@ -11,7 +11,7 @@ import Modal from "../components/Modal";
 
 // Icons
 import { IconContext } from "react-icons";
-import { BsFillTrashFill } from "react-icons/bs";
+import { BsFillTrashFill, BsPlusLg } from "react-icons/bs";
 
 // Utils
 import { UserFormSchema } from "../utils/FormSchemas";
@@ -373,7 +373,7 @@ const ProfilePage = () => {
             <div className="bg-white p-12 rounded-xl shadow">
               <div className="flex justify-between">
                 <h2 className="text-3xl font-bold">Productos publicados</h2>
-                {/* <div>
+                <div>
                   <button className="text-sm font-medium btn-success px-4 py-2 rounded transition flex items-center gap-2">
                     <IconContext.Provider
                       value={{
@@ -385,7 +385,7 @@ const ProfilePage = () => {
                     </IconContext.Provider>
                     Agregar nuevo producto
                   </button>
-                </div> */}
+                </div>
               </div>
               <div className="flex flex-col gap-12 mt-16">
                 {userProducts.length !== 0 ? (

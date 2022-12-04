@@ -14,11 +14,12 @@ import transporter from "./src/utils/nodemailerGenerator.js";
 // Importing routes
 import authRoutes from "./src/routes/authRoutes.js";
 import categoryRoutes from "./src/routes/categoryRoutes.js";
+import complaintRoutes from "./src/routes/complaintsRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import departmentRoutes from "./src/routes/departmentRoutes.js";
 import productRoutes from "./src/routes/productRoutes.js";
 import subscriptionRoutes from "./src/routes/subscriptionRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
-import complaintRoutes from "./src/routes/complaintsRoutes.js";
 
 // Initializing .env
 dotenv.config();
@@ -34,12 +35,12 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/complaints", complaintRoutes);
-
 
 // Listening for requests
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
