@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 import { BsChevronRight } from "react-icons/bs";
 
 const Stadistics = ({ color, count, title, link, text }) => (
-  <div className={`bg-${color}-600/90 text-white rounded-lg shadow-lg`}>
+  <div className={`${color} text-white rounded-lg shadow-lg`}>
     <div className="p-8">
       <span className="text-6xl font-bold">{count}</span>
       <h3 className="text-xl font-bold">{title}</h3>

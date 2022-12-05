@@ -48,10 +48,100 @@ export const updateUser = async (req, res) => {
       avatar,
     } = req.body;
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     let updatedUser = "";
+
+    if (firstName !== "") {
+      updatedUser = await db.query(
+        `UPDATE Person SET 
+          first_name = $1,
+          modified_at = NOW()
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
+          phone,
+          email,
+          avatar,
+          role_id AS "roleId"`,
+        [firstName, req.params.id]
+      );
+    }
+
+    if (lastName !== "") {
+      updatedUser = await db.query(
+        `UPDATE Person SET 
+          last_name = $1,
+          modified_at = NOW()
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
+          phone,
+          email,
+          avatar,
+          role_id AS "roleId"`,
+        [lastName, req.params.id]
+      );
+    }
+
+    if (phone !== "") {
+      updatedUser = await db.query(
+        `UPDATE Person SET 
+          phone = $1,
+          modified_at = NOW()
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
+          phone,
+          email,
+          avatar,
+          role_id AS "roleId"`,
+        [phone, req.params.id]
+      );
+    }
+
+    if (email !== "") {
+      updatedUser = await db.query(
+        `UPDATE Person SET 
+          email = $1,
+          modified_at = NOW()
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
+          phone,
+          email,
+          avatar,
+          role_id AS "roleId"`,
+        [email, req.params.id]
+      );
+    }
+
+    if (password !== "") {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      updatedUser = await db.query(
+        `UPDATE Person SET 
+          psswrd = $1,
+          modified_at = NOW()
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
+          phone,
+          email,
+          avatar,
+          role_id AS "roleId"`,
+        [hashedPassword, req.params.id]
+      );
+    }
 
     if (avatar) {
       const response = await cloudinary.uploader.upload(
@@ -66,56 +156,45 @@ export const updateUser = async (req, res) => {
       updatedUser = await db.query(
         `UPDATE Person
         SET
-          first_name = $1,
-          last_name = $2,
-          phone = $3,
-          email = $4,
-          psswrd = $5,
-          avatar = $6,
+          avatar = $1,
           modified_at = NOW()
-        WHERE id = $7
-        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
-        [
-          firstName,
-          lastName,
+        WHERE id = $2
+        RETURNING 
+          id,
+          first_name AS "firstName",
+          last_name AS "lastName",
           phone,
           email,
-          hashedPassword,
-          avatarURL,
-          req.params.id,
-        ]
-      );
-    } else {
-      updatedUser = await db.query(
-        `UPDATE Person
-        SET
-          first_name = $1,
-          last_name = $2,
-          phone = $3,
-          email = $4,
-          psswrd = $5,
-          modified_at = NOW()
-        WHERE id = $6
-        RETURNING id, first_name AS "firstName", last_name AS "lastName", phone, email, avatar, role_id AS "roleId"`,
-        [firstName, lastName, phone, email, hashedPassword, req.params.id]
+          avatar,
+          role_id AS "roleId"`,
+        [avatarURL, req.params.id]
       );
     }
 
-    const updatedUserAddress = await db.query(
-      `
-      UPDATE Person_Address
-      SET municipality_id = $1
-      WHERE person_id = $2
-      RETURNING *
-    `,
-      [municipalityId, req.params.id]
-    );
+    let updatedUserAddress = "";
 
-    res.status(200).json({
-      success: true,
-      updatedUser: updatedUser.rows[0],
-      updatedUserAddress: updatedUserAddress.rows[0],
-    });
+    if (municipalityId !== "") {
+      updatedUserAddress = await db.query(
+        `
+        UPDATE Person_Address
+        SET municipality_id = $1
+        WHERE person_id = $2
+        RETURNING *
+      `,
+        [municipalityId, req.params.id]
+      );
+
+      res.status(200).json({
+        success: true,
+        updatedUser: updatedUser.rows[0],
+        updatedUserAddress: updatedUserAddress.rows[0],
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        updatedUser: updatedUser.rows[0],
+      });
+    }
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: error.message });

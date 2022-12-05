@@ -648,9 +648,27 @@ INSERT INTO Person (
   avatar,
   created_at
 ) VALUES (
+  'HonduMarket',
+  'App',
+  '1111-1111',
+  'hondumarketapp@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-08-01 00:00:00'
+);
+
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar,
+  created_at
+) VALUES (
   'Any',
   'Lorenzana',
-  '1111-1111',
+  '2222-2222',
   'any@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
@@ -668,7 +686,7 @@ INSERT INTO Person (
 ) VALUES (
   'Isaac',
   'Aguilar',
-  '2222-2222',
+  '3333-3333',
   'ifaguilarnunez@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
@@ -686,7 +704,7 @@ INSERT INTO Person (
 ) VALUES (
   'Jazmín',
   'Maradiaga',
-  '3333-3333',
+  '4444-4444',
   'jazmin@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
@@ -704,7 +722,7 @@ INSERT INTO Person (
 ) VALUES (
   'Josué',
   'Zelaya',
-  '4444-4444',
+  '5555-5555',
   'josue@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
@@ -722,19 +740,96 @@ INSERT INTO Person (
 ) VALUES (
   'Jovanny',
   'Rubio',
-  '5555-5555',
+  '6666-6666',
   'jovanny@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-10-01 00:00:00'
+);
+
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar,
+  created_at
+) VALUES (
+  'Williams',
+  'Ramos',
+  '7777-7777',
+  'williams@gmail.com',
   '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
   'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
   '2022-11-01 00:00:00'
 );
 
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar,
+  created_at
+) VALUES (
+  'Daniel',
+  'Ramos',
+  '8888-8888',
+  'daniel@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-11-01 00:00:00'
+);
+
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar,
+  created_at
+) VALUES (
+  'Pedro',
+  'Molina',
+  '9999-9999',
+  'pedro@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-11-01 00:00:00'
+);
+
+INSERT INTO Person (
+  first_name,
+  last_name,
+  phone,
+  email,
+  psswrd,
+  avatar,
+  created_at
+) VALUES (
+  'Leonel',
+  'Messi',
+  '1010-1010',
+  'messi@gmail.com',
+  '$2b$10$Gejo9A6FWNczw6IZJvdCcetGI3EeEUbNMCLvUgDiSkBQIUbtbDxR.',
+  'https://res.cloudinary.com/dbh92pwr9/image/upload/v1667188207/HonduMarket/avatar.png',
+  '2022-12-01 00:00:00'
+);
+
 -- Persons Address
-INSERT INTO Person_Address (person_id, municipality_id) VALUES (1, 63);
-INSERT INTO Person_Address (person_id, municipality_id) VALUES (2, 19);
-INSERT INTO Person_Address (person_id, municipality_id) VALUES (3, 110);
-INSERT INTO Person_Address (person_id, municipality_id) VALUES (4, 132);
-INSERT INTO Person_Address (person_id, municipality_id) VALUES (5, 93);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (1, 110);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (2, 110);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (3, 19);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (4, 19);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (5, 63);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (6, 63);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (7, 93);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (8, 93);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (9, 1);
+INSERT INTO Person_Address (person_id, municipality_id) VALUES (10, 1);
 
 -- Electrodomésticos
 

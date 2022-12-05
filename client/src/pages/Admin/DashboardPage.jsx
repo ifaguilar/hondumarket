@@ -154,10 +154,14 @@ const DashboardPage = () => {
         {
           label: "Cantidad de usuarios",
           data: data.map((item) => item.users),
-          backgroundColor: bgColors,
-          borderColor: borderColors,
+          backgroundColor: "#bfdbfe",
+          borderColor: "#2563eb",
           pointRadius: 4,
-          pointHoverRadius: 8,
+          pointHoverRadius: 6,
+          fill: {
+            target: "origin",
+            above: "#bfdbfe",
+          },
         },
       ],
     });
@@ -250,28 +254,28 @@ const DashboardPage = () => {
         </h2>
         <div className="grid grid-cols-4 gap-12">
           <Stadistics
-            color="blue"
+            color="bg-blue-600/90"
             count={totalUsers}
             title="Usuarios registrados"
             link="/dashboard/users"
             text="usuarios"
           />
           <Stadistics
-            color="green"
+            color="bg-green-600/90"
             count={totalProducts}
             title="Productos publicados"
             link="/dashboard/products"
             text="productos"
           />
           <Stadistics
-            color="amber"
+            color="bg-amber-600/90"
             count={totalCategories}
             title="Categorías creadas"
             link="/dashboard/categories"
             text="categorías"
           />
           <Stadistics
-            color="red"
+            color="bg-red-600/90"
             count={totalComplaints}
             title="Denuncias pendientes"
             link="/dashboard/complaints"

@@ -139,8 +139,14 @@ const ProfilePage = () => {
       const phone = values.phone;
       const email = values.email;
       const password = values.password;
+      const departmentId = values.department;
       const municipalityId = values.municipality;
-      let avatar = values.avatar.name;
+      const avatar = values.avatar.name;
+
+      if (departmentId !== "" && municipalityId === "") {
+        alert("Por favor, selecciona un municipio.");
+        return;
+      }
 
       const body = {
         firstName,
@@ -222,7 +228,6 @@ const ProfilePage = () => {
                       type="text"
                       name="firstName"
                       placeholder="Ingresa tu nombre..."
-                      required
                     />
 
                     <CustomInput
@@ -230,7 +235,6 @@ const ProfilePage = () => {
                       type="text"
                       name="lastName"
                       placeholder="Ingresa tu apellido..."
-                      required
                     />
 
                     <CustomInput
@@ -238,7 +242,6 @@ const ProfilePage = () => {
                       type="text"
                       name="phone"
                       placeholder="Ingresa tu teléfono..."
-                      required
                     />
 
                     <CustomInput
@@ -246,7 +249,6 @@ const ProfilePage = () => {
                       type="email"
                       name="email"
                       placeholder="Ingresa tu correo electrónico..."
-                      required
                     />
 
                     <CustomInput
@@ -254,7 +256,6 @@ const ProfilePage = () => {
                       type="password"
                       name="password"
                       placeholder="Ingresa tu contraseña..."
-                      required
                     />
 
                     <CustomInput
@@ -262,7 +263,6 @@ const ProfilePage = () => {
                       type="password"
                       name="confirmPassword"
                       placeholder="Ingresa de nuevo tu contraseña..."
-                      required
                     />
 
                     <CustomSelect
@@ -272,7 +272,6 @@ const ProfilePage = () => {
                         props.handleChange(e);
                         fetchMunicipalities(e.target.value);
                       }}
-                      required
                     >
                       <option value="">Selecciona tu departamento...</option>
                       {departments &&
@@ -283,11 +282,7 @@ const ProfilePage = () => {
                         ))}
                     </CustomSelect>
 
-                    <CustomSelect
-                      label="Municipio"
-                      name="municipality"
-                      required
-                    >
+                    <CustomSelect label="Municipio" name="municipality">
                       <option value="">Selecciona tu municipio...</option>
                       {municipalities &&
                         municipalities.map((municipality) => (
