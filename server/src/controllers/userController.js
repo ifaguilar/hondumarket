@@ -143,13 +143,10 @@ export const updateUser = async (req, res) => {
       );
     }
 
-    if (avatar) {
-      const response = await cloudinary.uploader.upload(
-        `D:\\Downloads\\${avatar}`,
-        {
-          upload_preset: "dev_setup",
-        }
-      );
+    if (avatar !== "") {
+      const response = await cloudinary.uploader.upload(avatar, {
+        upload_preset: "dev_setup",
+      });
 
       const avatarURL = response.secure_url.replace(".webp", ".png");
 

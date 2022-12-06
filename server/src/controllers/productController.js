@@ -1,8 +1,62 @@
 import dotenv from "dotenv";
 import db from "../database/db.js";
+import cloudinary from "../utils/cloudinaryGenerator.js";
 
 // Initializing .env
 dotenv.config();
+
+export const createProduct = async (req, res) => {
+  try {
+    const {
+      userId,
+      productName,
+      description,
+      price,
+      category,
+      condition,
+      photos,
+    } = req.body;
+
+    const newProduct = await db.query(
+      `INSERT INTO Product (
+        product_name,
+        product_description,
+        price,
+        person_id,
+        category_id,
+        condition_id
+      ) VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *`,
+      [productName, description, price, userId, category, condition]
+    );
+
+    const newProductId = newProduct.rows[0].id;
+
+    photos.forEach(async (photo) => {
+      const response = await cloudinary.uploader.upload(photo, {
+        upload_preset: "dev_setup",
+      });
+
+      const photoURL = response.secure_url.replace(".webp", ".png");
+
+      await db.query(
+        `INSERT INTO Photo (
+          photo,
+          product_id
+        ) VALUES ($1, $2)`,
+        [photoURL, newProductId]
+      );
+    });
+
+    res.status(200).json({
+      success: true,
+      newProductId: newProductId,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const getProducts = async (req, res) => {
   try {

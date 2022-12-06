@@ -127,3 +127,23 @@ export const UserFormSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden."),
 });
+
+export const CreateProductFormSchema = yup.object().shape({
+  productName: yup
+    .string()
+    .min(3, "El nombre debe contener al menos 3 caracteres.")
+    .max(255, "El nombre no debe contener más de 255 caracteres.")
+    .required("Requerido."),
+  description: yup
+    .string()
+    .min(3, "La descripción debe contener al menos 3 caracteres.")
+    .max(255, "La descripción no debe contener más de 255 caracteres.")
+    .required("Requerido."),
+  price: yup
+    .number()
+    .min(1, "Por favor, ingresa una cantidad válida.")
+    .positive("Por favor, ingresa una cantidad válida.")
+    .required("Requerido."),
+  category: yup.string().required("Requerido."),
+  condition: yup.string().required("Requerido."),
+});

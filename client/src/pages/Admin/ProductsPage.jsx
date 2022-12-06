@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
+import { ToastContainer, toast } from "react-toastify";
 
 // Components
 import CustomButton from "../../components/CustomButton";
@@ -11,6 +12,9 @@ import Pagination from "../../components/Pagination";
 
 // Utils
 import { ProductFormSchema } from "../../utils/FormSchemas";
+
+// CSS
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -76,8 +80,28 @@ const ProductsPage = () => {
         fetchProducts();
         setOpenModal(false);
         setActiveProduct([]);
+
+        toast.success("Producto actualizado correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
-        alert(data.message);
+        toast.error(`${data.message}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error(error.message);
@@ -86,6 +110,7 @@ const ProductsPage = () => {
 
   return (
     <>
+      <ToastContainer />
       <Modal open={openModal} close={() => setOpenModal(false)}>
         {activeProduct && (
           <Formik

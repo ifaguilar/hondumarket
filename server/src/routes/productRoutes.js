@@ -10,12 +10,14 @@ import {
   getProductsDashboard,
   getSeller,
   updateProduct,
+  createProduct,
 } from "../controllers/productController.js";
 
 const router = Router();
 
 // Routes
 router.get("/", getProducts);
+router.post("/", createProduct);
 router.get("/dashboard", getProductsDashboard);
 router.patch("/deactivate/:id", deactivateProduct);
 router.get("/:id", getProduct);

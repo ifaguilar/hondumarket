@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
+import { ToastContainer, toast } from "react-toastify";
 
 // Components
 import CustomButton from "../../components/CustomButton";
@@ -11,6 +12,9 @@ import Pagination from "../../components/Pagination";
 
 // Utils
 import { CategoryFormSchema } from "../../utils/FormSchemas";
+
+// CSS
+import "react-toastify/dist/ReactToastify.css";
 
 const CategoriesPage = () => {
   const [loading, setLoading] = useState(true);
@@ -79,8 +83,28 @@ const CategoriesPage = () => {
         fetchCategories();
         setOpenModal(false);
         setActiveCategory([]);
+
+        toast.success("Categoría actualizada correctamente.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
-        alert(data.message);
+        toast.error(`${data.message}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error(error.message);
@@ -89,6 +113,7 @@ const CategoriesPage = () => {
 
   return (
     <>
+      <ToastContainer />
       <Modal open={openModal} close={() => setOpenModal(false)}>
         {activeCategory && (
           <Formik

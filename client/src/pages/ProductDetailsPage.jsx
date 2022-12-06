@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
+import { Navigation, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Icons
+import { AiFillStar } from "react-icons/ai";
 
 // Context
 import AuthContext from "../context/AuthContextProvider";
 
 // Components
-import { AiFillStar } from "react-icons/ai";
 import ComplaintSeller from "../components/ComplaintSeller";
 import CustomButton from "../components/CustomButton";
 import Modal from "../components/Modal";
 import RateSeller from "../components/RateSeller";
+
+// CSS
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const ProductDetailsPage = () => {
   const { auth } = useContext(AuthContext);
@@ -224,25 +231,35 @@ const ProductDetailsPage = () => {
               loading="lazy"
             />
 
-            <div className="grid grid-cols-6 gap-4 items-center">
+            <Swiper
+              className="max-w-full flex"
+              modules={[Navigation, Pagination]}
+              slidesPerView={3}
+              spaceBetween={50}
+              navigation={true}
+              pagination={{ clickable: true }}
+            >
               {photos.map((photo) => (
-                <img
-                  className={`aspect-square w-48 rounded-xl object-cover bg-white cursor-pointer ${
-                    activePhoto === photo.id
-                      ? "border-solid border-4 border-blue-500"
-                      : ""
-                  }`}
-                  src={photo.photo}
-                  alt={product.product_name}
-                  loading="lazy"
-                  key={photo.id}
-                  onClick={() => {
-                    setMainPhoto(photo.photo);
-                    setActivePhoto(photo.id);
-                  }}
-                />
+                <SwiperSlide key={photo.id}>
+                  <img
+                    className={`aspect-square w-48 rounded-xl object-cover bg-white cursor-pointer ${
+                      activePhoto === photo.id
+                        ? "border-solid border-4 border-blue-500"
+                        : ""
+                    }`}
+                    src={photo.photo}
+                    alt={product.product_name}
+                    loading="lazy"
+                    onClick={() => {
+                      setMainPhoto(photo.photo);
+                      setActivePhoto(photo.id);
+                    }}
+                  />
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
+
+            <div className="grid grid-cols-6 gap-4 items-center"></div>
           </div>
 
           <div className="grid grid-cols-[384px_1fr] bg-white p-12 rounded-xl shadow sticky top-20">
