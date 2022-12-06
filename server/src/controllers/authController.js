@@ -77,28 +77,22 @@ export const signinUser = async (req, res) => {
     ]);
 
     if (user.rowCount === 0) {
-      console.error("El correo electrónico introducido es incorrecto.");
-      return res
-        .status(401)
-        .json({ message: "El correo electrónico introducido es incorrecto." });
+      console.error("Credenciales incorrectas.");
+      return res.status(401).json({ message: "Credenciales incorrectas." });
     }
 
     const validPassword = await bcrypt.compare(password, user.rows[0].psswrd);
 
     if (!validPassword) {
-      console.error("La contraseña introducida es incorrecta.");
-      return res
-        .status(401)
-        .json({ message: "La contraseña introducida es incorrecta." });
+      console.error("Credenciales incorrectas.");
+      return res.status(401).json({ message: "Credenciales incorrectas." });
     }
 
     if (!user.rows[0].is_active) {
-      return res
-        .status(401)
-        .json({
-          message:
-            "Este usuario está desactivado, contáctate con soporte para la reactivación del mismo.",
-        });
+      return res.status(401).json({
+        message:
+          "Este usuario está desactivado, contáctate con soporte para la reactivación del mismo.",
+      });
     }
 
     const newToken = jwtGenerator(user.rows[0].id, "1h");

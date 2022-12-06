@@ -154,25 +154,6 @@ const Footer = () => (
                 </a>
               </li>
 
-              <li>
-                <a className="flex gap-1.5" href="tel:+504-1234-5678">
-                  <IconContext.Provider
-                    value={{
-                      className: "text-gray-700",
-                      size: "18px",
-                    }}
-                  >
-                    <div>
-                      <BsTelephone />
-                    </div>
-                  </IconContext.Provider>
-
-                  <span className="text-gray-700 hover:text-[#3b82f6]">
-                    +504 1234-5678
-                  </span>
-                </a>
-              </li>
-
               <li className="flex gap-1.5">
                 <IconContext.Provider
                   value={{

@@ -104,7 +104,6 @@ const ProfilePage = () => {
   };
 
   const fetchUserRate = async () => {
-
     const response = await fetch(
       `http://localhost:3000/api/users/${userId}/rating`
     );
@@ -278,7 +277,31 @@ const ProfilePage = () => {
       const photos = images;
 
       if (photos.length < 6) {
-        alert("Por favor, selecciona al menos 6 imágenes para el producto.");
+        toast.warning(
+          "Por favor, selecciona al menos 6 imágenes para el producto.",
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        return;
+      } else if (photos.length > 12) {
+        toast.warning("Solo puedes subir 12 imágenes por producto.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
 
@@ -361,7 +384,7 @@ const ProfilePage = () => {
       };
     });
   };
-  
+
   return (
     <>
       <ToastContainer />
@@ -592,11 +615,11 @@ const ProfilePage = () => {
 
               {rating?.reviews_amount > 0 && (
                 <SellerRating
-                  rateAvg={rating.rate_average} 
-                  reviewAmount={rating.reviews_amount} 
+                  rateAvg={rating.rate_average}
+                  reviewAmount={rating.reviews_amount}
                   scale={1.3}
-                />)
-              }
+                />
+              )}
 
               <div className="w-full flex flex-col gap-4 mt-16">
                 <p className="font-medium">Información de contacto</p>

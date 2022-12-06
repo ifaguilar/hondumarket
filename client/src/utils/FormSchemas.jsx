@@ -141,6 +141,7 @@ export const CreateProductFormSchema = yup.object().shape({
     .required("Requerido."),
   price: yup
     .number()
+    .typeError("Por favor, ingresa una cantidad válida.")
     .min(1, "Por favor, ingresa una cantidad válida.")
     .positive("Por favor, ingresa una cantidad válida.")
     .required("Requerido."),

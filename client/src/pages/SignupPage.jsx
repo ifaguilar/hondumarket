@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 // Assets
 import WebsiteIllustration from "../assets/website-illustration.png";
@@ -19,6 +20,9 @@ import Terms from "../components/Terms";
 
 // Utils
 import { SignupFormSchema } from "../utils/FormSchemas";
+
+// CSS
+import "react-toastify/dist/ReactToastify.css";
 
 const SignupPage = () => {
   const { setAuth } = useContext(AuthContext);
@@ -104,7 +108,16 @@ const SignupPage = () => {
         setAuth(true);
         navigate("/");
       } else {
-        alert(data.message);
+        toast.error(`${data.message}`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error(error.message);
@@ -113,6 +126,7 @@ const SignupPage = () => {
 
   return (
     <>
+      <ToastContainer />
       <Modal open={openModal} close={() => setOpenModal(false)}>
         <Terms />
       </Modal>
