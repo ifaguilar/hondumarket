@@ -220,7 +220,7 @@ const CategoriesPage = () => {
                   <p className="font-semibold w-96">
                     Fecha y hora de última modificación
                   </p>
-                  <p className="font-semibold"></p>
+                  <p className="font-semibold w-32"></p>
                 </div>
               ) : null}
               {currentCategories.length !== 0 ? (
@@ -242,24 +242,26 @@ const CategoriesPage = () => {
                         hour12: true,
                       }).format(new Date(category.modified_at))}
                     </p>
-                    <CustomButton
-                      type="button"
-                      variant="primary"
-                      onClick={() => {
-                        setActiveCategory(
-                          JSON.parse(`{
-                            "id": ${category.id}, 
-                            "categoryName": "${category.category_name}",
-                            "createdAt": "${category.created_at}",
-                            "modifiedAt": "${category.modified_at}",
-                            "isActive": ${category.is_active}
-                          }`)
-                        );
-                        setOpenModal(true);
-                      }}
-                    >
-                      Editar
-                    </CustomButton>
+                    <div className="w-32">
+                      <CustomButton
+                        type="button"
+                        variant="primary"
+                        onClick={() => {
+                          setActiveCategory(
+                            JSON.parse(`{
+                              "id": ${category.id}, 
+                              "categoryName": "${category.category_name}",
+                              "createdAt": "${category.created_at}",
+                              "modifiedAt": "${category.modified_at}",
+                              "isActive": ${category.is_active}
+                            }`)
+                          );
+                          setOpenModal(true);
+                        }}
+                      >
+                        Editar
+                      </CustomButton>
+                    </div>
                   </div>
                 ))
               ) : (

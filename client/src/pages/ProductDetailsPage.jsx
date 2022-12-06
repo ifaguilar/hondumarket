@@ -20,6 +20,8 @@ import RateSeller from "../components/RateSeller";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import SellerRating from "../components/SellerRating";
+import ShowSellerReviews from "../components/ShowSellerReviews";
 
 const ProductDetailsPage = () => {
   const { auth } = useContext(AuthContext);
@@ -35,6 +37,7 @@ const ProductDetailsPage = () => {
   const [isProductInWishlist, setIsProductInWishlist] = useState(false);
   const [openRatingModal, setOpenRatingModal] = useState(false);
   const [openComplaintgModal, setOpenComplaintgModal] = useState(false);
+  const [openSellerReviewsModal, setOpenSellerReviewsModal] = useState(false);
 
   const addView = async () => {
     try {
@@ -91,7 +94,7 @@ const ProductDetailsPage = () => {
     if (!sellerID) return {};
 
     const response = await fetch(
-      `http://localhost:3000/api/users/${sellerID}/rating/seller`
+      `http://localhost:3000/api/users/${sellerID}/rating`
     );
 
     const data = await response.json();
@@ -205,13 +208,7 @@ const ProductDetailsPage = () => {
     if (!seller?.rate_average || reviewAmount < 1) return null;
 
     return (
-      <div className="flex items-center flex-wrap gap-1">
-        <p className="flex flex-nowrap items-center gap-1 text-xs text-slate-600">
-          {Number.parseFloat(seller.rate_average).toFixed(1)}/5
-          <AiFillStar style={{ color: "orange", transform: "scale(1.1)" }} />
-        </p>
-        <p className="text-xs text-slate-600">({reviewAmount} reviews)</p>
-      </div>
+      <SellerRating rateAvg={seller.rate_average} reviewAmount={reviewAmount} />
     );
   };
 
@@ -371,12 +368,16 @@ const ProductDetailsPage = () => {
               </div>
 
               <div className="flex flex-col gap-8 mt-8">
+                <CustomButton
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setOpenSellerReviewsModal(true)}
+                >
+                  Ver reviews del vendedor
+                </CustomButton>
                 {auth &&
                 seller.id !== JSON.parse(localStorage.getItem("user")).id ? (
                   <>
-                    <CustomButton type="button" variant="primary">
-                      Contactar al vendedor
-                    </CustomButton>
                     <CustomButton
                       type="button"
                       variant="secondary"
@@ -387,10 +388,13 @@ const ProductDetailsPage = () => {
 
                     <CustomButton
                       type="button"
-                      variant="danger"
+                      variant="secondary"
                       onClick={() => setOpenComplaintgModal(true)}
                     >
                       Denunciar al vendedor
+                    </CustomButton>
+                    <CustomButton type="button" variant="primary">
+                      Contactar al vendedor
                     </CustomButton>
                   </>
                 ) : null}
@@ -415,6 +419,13 @@ const ProductDetailsPage = () => {
           sellerInfo={seller}
           closeModalHandler={setOpenComplaintgModal}
         />
+      </Modal>
+
+      <Modal
+        open={openSellerReviewsModal}
+        close={() => setOpenSellerReviewsModal(false)}
+      >
+        <ShowSellerReviews sellerID={seller.id} />
       </Modal>
     </div>
   );

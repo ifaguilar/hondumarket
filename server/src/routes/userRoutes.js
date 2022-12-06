@@ -9,6 +9,7 @@ import {
   getAddress,
   getAverageUserRating,
   getProducts,
+  getSellerReviews,
   getUsers,
   getWishlist,
   getWishlistProducts,
@@ -31,10 +32,12 @@ router.post("/:id/wishlist", addToWishlist);
 router.delete("/:id/wishlist", removeFromWishlist);
 
 //Routes para el rating
-router.get("/:id/rating/seller", getAverageUserRating);
+router.get("/:id/rating", getAverageUserRating);
 // router.get("/:id/rating",  getUserRating)
 router.post("/rate",  addUserRating, updateRating)
 router.post("/complaint",  addUserComplaint, updateComplaint)
 router.post("/changeStatus",  changeUserStatus)
+router.get("/:id/reviews",  getSellerReviews)
+
 
 export default router;

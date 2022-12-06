@@ -20,6 +20,7 @@ import CustomTextArea from "../components/CustomTextArea";
 
 // CSS
 import "react-toastify/dist/ReactToastify.css";
+import SellerRating from "../components/SellerRating";
 
 const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ const ProfilePage = () => {
   const [conditions, setConditions] = useState([]);
   const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
+  const [rating, setRating] = useState({});
 
   const userId = JSON.parse(localStorage.getItem("user")).id;
 
@@ -101,12 +103,24 @@ const ProfilePage = () => {
     setConditions(data);
   };
 
+  const fetchUserRate = async () => {
+
+    const response = await fetch(
+      `http://localhost:3000/api/users/${userId}/rating`
+    );
+
+    const data = await response.json();
+
+    setRating(data);
+  };
+
   useEffect(() => {
     fetchUserAddress();
     fetchUserProducts();
     fetchDepartments();
     fetchCategories();
     fetchConditions();
+    fetchUserRate();
   }, []);
 
   useEffect(() => {
@@ -347,7 +361,7 @@ const ProfilePage = () => {
       };
     });
   };
-
+  
   return (
     <>
       <ToastContainer />
@@ -575,6 +589,14 @@ const ProfilePage = () => {
               />
 
               <h2 className="whitespace-nowrap text-3xl font-bold">{`${user.firstName} ${user.lastName}`}</h2>
+
+              {rating?.reviews_amount > 0 && (
+                <SellerRating
+                  rateAvg={rating.rate_average} 
+                  reviewAmount={rating.reviews_amount} 
+                  scale={1.3}
+                />)
+              }
 
               <div className="w-full flex flex-col gap-4 mt-16">
                 <p className="font-medium">Información de contacto</p>

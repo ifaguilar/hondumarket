@@ -230,7 +230,7 @@ export const deactivateProduct = async (req, res) => {
   try {
     const { productId } = req.body;
 
-    await db.query("UPDATE Product SET is_active = FALSE WHERE id = $1", [
+    await db.query("UPDATE Product SET is_active = FALSE, modified_at = NOW() WHERE id = $1", [
       productId,
     ]);
 

@@ -241,7 +241,7 @@ const ProductsPage = () => {
                   <p className="font-semibold w-96">
                     Fecha y hora de última modificación
                   </p>
-                  <p className="font-semibold"></p>
+                  <p className="font-semibold w-32"></p>
                 </div>
               ) : null}
               {currentProducts.length !== 0 ? (
@@ -263,27 +263,29 @@ const ProductsPage = () => {
                         hour12: true,
                       }).format(new Date(product.modified_at))}
                     </p>
-                    <CustomButton
-                      type="button"
-                      variant="primary"
-                      onClick={() => {
-                        setActiveProduct(
-                          JSON.parse(`{
-                            "id": ${product.id}, 
-                            "productName": "${product.product_name}",
-                            "productDescription": "${product.product_description}",
-                            "price": "${product.price}",
-                            "createdAt": "${product.created_at}",
-                            "modifiedAt": "${product.modified_at}",
-                            "isActive": ${product.is_active},
-                            "expirationDate": "${product.expiration_date}"
-                          }`)
-                        );
-                        setOpenModal(true);
-                      }}
-                    >
-                      Editar
-                    </CustomButton>
+                    <div className="w-32">
+                      <CustomButton
+                        type="button"
+                        variant="primary"
+                        onClick={() => {
+                          setActiveProduct(
+                            JSON.parse(`{
+                              "id": ${product.id}, 
+                              "productName": "${product.product_name}",
+                              "productDescription": "${product.product_description}",
+                              "price": "${product.price}",
+                              "createdAt": "${product.created_at}",
+                              "modifiedAt": "${product.modified_at}",
+                              "isActive": ${product.is_active},
+                              "expirationDate": "${product.expiration_date}"
+                            }`)
+                          );
+                          setOpenModal(true);
+                        }}
+                      >
+                        Editar
+                      </CustomButton>
+                    </div>
                   </div>
                 ))
               ) : (

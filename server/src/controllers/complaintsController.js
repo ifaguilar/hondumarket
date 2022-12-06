@@ -59,7 +59,8 @@ const changeComplaintStatus = async (req, res) => {
         console.log(req.body);
         const resDB = await db.query(`
         UPDATE complaints 
-          SET is_active = $1
+          SET is_active = $1,
+          modified_at = NOW()
           WHERE person_id = $2 and reviewer_id = $3
       `, [isActive, sellerID, userID]
         );

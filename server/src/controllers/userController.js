@@ -18,7 +18,8 @@ export const getUsers = async (req, res) => {
 				email, 
 				created_at, 
 				modified_at,
-				is_active
+				is_active,
+        role_id
 			FROM Person
 				${state == "onlyActive" ? "WHERE is_active = TRUE" : ""}
 			ORDER BY id ASC
@@ -382,7 +383,8 @@ export const updateRating = async (req, res) => {
       `
         UPDATE person_rating 
           SET description = $1, 
-          rating_id = $2
+          rating_id = $2,
+          modified_at = NOW()
           WHERE person_id = $3 and reviewer_id = $4
       	`,
       [description, rateNumber, sellersId, userId]
@@ -466,7 +468,8 @@ export const updateComplaint = async (req, res) => {
       `
         UPDATE complaints 
           SET description = $1, 
-          cod_complaintCategories = $2 
+          cod_complaintCategories = $2,
+          modified_at = NOW() 
           WHERE person_id = $3 and reviewer_id = $4
       `,
       [description, complaintCategoryID, sellersId, userId]
@@ -547,7 +550,8 @@ export const changeUserStatus = async (req, res) => {
     const resDB = await db.query(
       `
         UPDATE person 
-          SET is_active = $1
+          SET is_active = $1,
+          modified_at = NOW()
           WHERE id = $2
       `,
       [isActive, userID]
@@ -562,6 +566,45 @@ export const changeUserStatus = async (req, res) => {
       ok: true,
       isChanged: true,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getSellerReviews = async (req, res) => {
+  try {
+    const { id:userID } = req.params;
+
+    if (!userID)
+      throw new Error("El seller id es necesario");
+
+    const resDB = await db.query(
+      `
+        SELECT
+          pr.description,
+          pr.modified_at,
+          r.rating_value,
+          p.first_name,
+          p.last_name
+        FROM person_rating as pr
+        JOIN person as p
+          ON p.id = pr.reviewer_id
+        JOIN rating as r
+          ON r.id = pr.rating_id
+        WHERE person_id = $1
+      `,
+      [userID]
+    );
+
+    res.status(200).json({
+      ok: true,
+      data: resDB.rows,
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({

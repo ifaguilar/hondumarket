@@ -9,6 +9,7 @@ import SwitchOnOff from "../../components/SwitchOnOff";
 const ComplaintsPage = () => {
   const [loading, setLoading] = useState(true);
   const [complaints, setComplaints] = useState([]);
+  const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [ItemsPerPage, setItemsPerPage] = useState(10);
@@ -17,6 +18,7 @@ const ComplaintsPage = () => {
   const [refresh, setRefesh] = useState(false);
   const [modalStatus, setModalStatus] = useState("unsent");
   const [modalDescription, setModalDescription] = useState("");
+  const [searchText, setsearchText] = useState("");
 
   const fetchComplaints = async (filter = "all") => {
     const response = await fetch(
@@ -25,7 +27,9 @@ const ComplaintsPage = () => {
       }`
     );
     const data = await response.json();
+
     setComplaints(data);
+    setFilteredComplaints(data);
   };
 
   const getComplaintsCategories = async () => {
@@ -51,7 +55,6 @@ const ComplaintsPage = () => {
     );
 
     const data = await response.json();
-    console.log(data);
 
     setModalStatus(data.isChanged ? "success" : "error");
 
@@ -62,6 +65,21 @@ const ComplaintsPage = () => {
     );
 
     setRefesh((prevState) => !prevState);
+  };
+
+  const onChangeSearcher = (evt) => {
+    const value = evt.target.value;
+    setsearchText(value);
+
+    if (!value) setFilteredComplaints(complaints);
+
+    const filteredComplaints = complaints.filter((complaint) =>
+      complaint.description
+        .toLocaleLowerCase()
+        .includes(value.toLocaleLowerCase())
+    );
+
+    setFilteredComplaints(filteredComplaints);
   };
 
   useEffect(() => {
@@ -88,29 +106,40 @@ const ComplaintsPage = () => {
     } else {
       return (
         <div className="p-12 bg-white rounded-lg shadow">
-          <div className="flex justify-between">
-            <div>
+          <div>
+            <div className="flex justify-between">
               <h2 className="text-3xl font-bold">Denuncias</h2>
-              <p className="mt-4">
-                Administración de todas las denuncias de la plataforma.
-              </p>
+              <div className="flex gap-5">
+                <select
+                  className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  onChange={(evt) => fetchComplaints(evt.target.value)}
+                >
+                  <option value="all">Todas</option>
+                  {complaintCategories.map((category) => (
+                    <option key={category.cod_complaintcategories}>
+                      {category.nombre_category}
+                    </option>
+                  ))}
+                </select>
+                <label>
+                  Buscar:{" "}
+                  <input
+                    type="text"
+                    className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Buscar denuncias por descripción..."
+                    value={searchText}
+                    onChange={onChangeSearcher}
+                  />
+                </label>
+              </div>
             </div>
-            <div>
-              <select
-                className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(evt) => fetchComplaints(evt.target.value)}
-              >
-                <option value="all">Todas</option>
-                {complaintCategories.map((category) => (
-                  <option key={category.cod_complaintcategories}>
-                    {category.nombre_category}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <p className="mt-4">
+              Administración de todas las denuncias de la plataforma.
+            </p>
           </div>
+
           <div className="flex flex-col gap-12 mt-12">
-            {complaints.length !== 0 ? (
+            {filteredComplaints.length !== 0 ? (
               <div className="flex gap-4 items-center">
                 <p className="font-semibold w-6">#</p>
                 <p className="font-semibold w-96">Descripcion</p>
@@ -120,11 +149,11 @@ const ComplaintsPage = () => {
                 <p className="font-semibold w-96">
                   Fecha y hora de última modificación
                 </p>
-                <p className="font-semibold"></p>
+                <p className="font-semibold w-16">¿Activa?</p>
               </div>
             ) : null}
-            {complaints.length !== 0 ? (
-              complaints.map((complaint, idx) => (
+            {filteredComplaints.length !== 0 ? (
+              filteredComplaints.map((complaint, idx) => (
                 <div key={complaint.id} className="flex gap-4 items-center">
                   <p className="w-6">{idx + 1}</p>
                   <p className="w-96 break-all">{complaint.description}</p>
@@ -147,15 +176,17 @@ const ComplaintsPage = () => {
                     }).format(new Date(complaint.modified_at))}
                   </p>
 
-                  <SwitchOnOff
-                    isOn={complaint.is_active}
-                    value=""
-                    onChange={() => {
-                      setSelectedComplaint(complaint);
-                      setModalStatus("unsent");
-                      setOpenModal(true);
-                    }}
-                  />
+                  <div className="w-16">
+                    <SwitchOnOff
+                      isOn={complaint.is_active}
+                      value=""
+                      onChange={() => {
+                        setSelectedComplaint(complaint);
+                        setModalStatus("unsent");
+                        setOpenModal(true);
+                      }}
+                    />
+                  </div>
                 </div>
               ))
             ) : (
@@ -164,7 +195,7 @@ const ComplaintsPage = () => {
           </div>
           <div className="mt-8">
             <Pagination
-              totalProducts={complaints.length}
+              totalProducts={filteredComplaints.length}
               productsPerPage={ItemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
